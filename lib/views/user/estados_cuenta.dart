@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bank_app_mobile/screens/user/historial_transferencias_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../model/models.dart';
+import '../../../../model/models.dart';
 
 class EstadosCuenta extends StatelessWidget {
   User user;
@@ -11,9 +11,7 @@ class EstadosCuenta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CardModel(bankAccount: bankAccount).buildCardModel(context),
-    );
+    return  CardModel(bankAccount: bankAccount).buildCardModel(context);
   }
 }
 

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:bank_app_mobile/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../temp/custom_snack_bar.dart';
+import '../screens/temp/custom_snack_bar.dart';
+
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key}) ;

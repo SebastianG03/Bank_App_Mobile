@@ -1,10 +1,10 @@
 
-import 'package:bank_app_mobile/screens/user/widgets/sign_in.dart';
-import 'package:bank_app_mobile/screens/user/widgets/sign_up.dart';
 import 'package:bank_app_mobile/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/bubble_indicator_painter.dart';
+import '../../views/sign_in.dart';
+import '../../views/sign_up.dart';
 
 
 class LoginScreen extends StatefulWidget {

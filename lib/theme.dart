@@ -10,17 +10,15 @@ class CustomTheme {
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 
+  static const Color background = Color(0xFFF3F3F3);
+  static const Color appBar = Color(0xFF860A35);
+  static const Color buttonPrimary = Color(0xFFAF2655);
+  static const Color buttonSecondary = Color(0xFFA3B763);
+  static const Color selected = Color(0xFFD93668);
   static const LinearGradient primaryGradient = LinearGradient(
     colors: <Color>[loginGradientStart, loginGradientEnd],
     stops: <double>[0.0, 1.0],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-}
-
-class AppTheme {
-  static const Color background = Color(0xFFF3F3F3);
-  static const Color appBar = Color(0xFF860A35);
-  static const Color buttonPrimary = Color(0xFFAF2655);
-  static const Color buttonSecondary = Color(0xFFA3B763);
 }

@@ -8,18 +8,15 @@ import '../screens/user/login_screen.dart';
 
 class AppRoutes {
 
-  late User user;
-  late BankAccount bankAccount;
-
-
-  AppRoutes();
-
+  final User user;
+  final BankAccount bankAccount;
 
   AppRoutes.userData({required this.user, required this.bankAccount});
 
-  static const initialRoute = LoginScreen();
+  static const initialRoute = 'login';
 
-  static Map<String, Widget Function(BuildContext)> userRoutes = {
+  static Map<String, Widget Function(BuildContext)> routes = {
+    'login': (BuildContext context) => const LoginScreen(),
   };
 
 }

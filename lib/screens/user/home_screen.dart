@@ -1,8 +1,9 @@
+import 'package:bank_app_mobile/theme.dart';
 import 'package:flutter/material.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../../model/models.dart';
+import 'package:bank_app_mobile/views/views_user.dart';
+import 'package:bank_app_mobile/utils/app_bar_items.dart';
 
 class HomeScreen extends StatefulWidget {
   BankAccount bankAccount;
@@ -11,56 +12,52 @@ class HomeScreen extends StatefulWidget {
   HomeScreen({super.key, required this.user, required this.bankAccount});
 
   @override
-  _ScreenState createState() => _ScreenState();
-
-
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _ScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  late PageController _pageController;
-  BankAccount get bankAccount => widget.bankAccount;
-  User get user => widget.user;
-
-  @override
-  void dispose() {
-    _pageController?.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.house),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.swap_vert),
-            label: 'Transferencias',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.person),
-            label: 'Cuenta',
-          ),
-        ],
-      ),
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: [
+            EstadosCuenta(user: widget.user, bankAccount: widget.bankAccount),
+            TransferenciasView(user: widget.user, bankAccount: widget.bankAccount),
+            CuentaUsuarioView(user: widget.user, bankAccount: widget.bankAccount),
+          ],
+        ),
+        bottomNavigationBar: bottomBar(context),
     );
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+
+
+  Widget bottomBar(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      type: BottomNavigationBarType.shifting,
+      selectedItemColor: CustomTheme.selected,
+      iconSize: 40,
+      onTap: (value) => setState(() => _selectedIndex = value),
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: AppBarItems.appBarIcons['Inicio']!,
+          label: 'Inicio',
+        ),
+        BottomNavigationBarItem(
+          icon: AppBarItems.appBarIcons['Transferencia']!,
+          label: 'Transferencias',
+        ),
+        BottomNavigationBarItem(
+          icon: AppBarItems.appBarIcons['Cuenta']!,
+          label: 'Cuenta',
+        ),
+      ],
+    );
   }
 }
+
+
