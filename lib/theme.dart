@@ -15,6 +15,11 @@ class CustomTheme {
   static const Color buttonPrimary = Color(0xFFAF2655);
   static const Color buttonSecondary = Color(0xFFA3B763);
   static const Color selected = Color(0xFFD93668);
+  static const Color alertBackground = Color(0x99B2AFAF);
+  static const Color alertTitleBackground = Color(0xFFB2AFAF);
+  static const Color alertButtonText = Color(0xFF374472);
+
+
   static const LinearGradient primaryGradient = LinearGradient(
     colors: <Color>[loginGradientStart, loginGradientEnd],
     stops: <double>[0.0, 1.0],

@@ -1,5 +1,6 @@
 import 'package:bank_app_mobile/screens/temp/custom_snack_bar.dart';
 import 'package:bank_app_mobile/theme.dart';
+import 'package:bank_app_mobile/widgets/formsModels.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -29,6 +30,14 @@ class _SignUpState extends State<SignUp>{
   TextEditingController signupPhoneController = TextEditingController();
   TextEditingController signupCedulaController = TextEditingController();
   TextEditingController signupRoleController = TextEditingController();
+
+  late String name;
+  late String email;
+  late String password;
+  late String confirmPassword;
+  late String phone;
+  late String role;
+  late String dni;
 
   @override
   void dispose() {
@@ -62,231 +71,26 @@ class _SignUpState extends State<SignUp>{
                   height: 360.0,
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: focusNodeName,
-                          controller: signupNameController,
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.words,
-                          autocorrect: false,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSansSemiBold',
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.user,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Nombre',
-                            hintStyle: TextStyle(
-                              fontFamily: 'WorkSansSemiBold', fontSize: 16.0
-                            ),
-                          ),
-                          onSubmitted: (_) {
-                            focusNodeEmail.requestFocus();
-                          },
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: focusNodeEmail,
-                          controller: signupEmailController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSansSemiBold',
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Email',
-                            hintStyle: TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 16.0,),
-                          ),
-                          onSubmitted: (_) {
-                            focusNodePassword.requestFocus();
-                          },
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: focusNodePhone,
-                          controller: signupPhoneController,
-                          keyboardType: TextInputType.phone,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSansSemiBold',
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.phone,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Teléfono',
-                            hintStyle: TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 16.0,),
-                          ),
-                          onSubmitted: (_) {
-                            focusNodeCedula.requestFocus();
-                          },
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: focusNodeCedula,
-                          controller: signupCedulaController,
-                          keyboardType: TextInputType.number,
-                          autocorrect: false,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSansSemiBold',
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.idCard,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Cédula',
-                            hintStyle: TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 16.0,),
-                          ),
-                          onSubmitted: (_) {
-                            focusNodeRole.requestFocus();
-                          },
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: focusNodeRole,
-                          controller: signupRoleController,
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.words,
-                          autocorrect: false,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSansSemiBold',
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.user,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Cliente o Administrador',
-                            hintStyle: TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 16.0,),
-                          ),
-                          onSubmitted:  (_) => focusNodePassword.requestFocus(),
-                        ),
-                      ),
-                      Container(
-                        width: 300.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: focusNodePassword,
-                          controller: signupPasswordController,
-                          obscureText: _obscureTextPassword,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSansSemiBold',
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: const Icon(
-                              FontAwesomeIcons.lock,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Contraseña',
-                            hintStyle: const TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 16.0,),
-                            suffixIcon: GestureDetector(
-                              onTap: _toggleSignup,
-                              child: Icon(
-                                _obscureTextPassword ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
-                                size: 15.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          onSubmitted: (_) => focusNodeConfirmPassword.requestFocus(),
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: focusNodeConfirmPassword,
-                          controller: signupConfirmPasswordController,
-                          obscureText: _obscureTextConfirmPassword,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSansSemiBold',
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: const Icon(
-                              FontAwesomeIcons.lock,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Confirmar contraseña',
-                            hintStyle: const TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 16.0,),
-                            suffixIcon: GestureDetector(
-                              onTap: _toggleSignUpConfirm,
-                              child: Icon(
-                                _obscureTextConfirmPassword ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
-                                size: 15.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          onSubmitted: (_) {
-                            _toggleSignUpButton();
-                          },
-                          textInputAction: TextInputAction.go,
-                        ),
-                      ),
+                      FormsModels.textFormFieldModel(context, name, signupNameController, TextInputType.text, focusNodeName
+                          , 'Nombre', FontAwesomeIcons.person),
+                      space(context),
+                      FormsModels.textFormFieldModel(context, email, signupEmailController, TextInputType.emailAddress,
+                          focusNodeEmail, 'Correo electrónico', FontAwesomeIcons.envelope),
+                      space(context),
+                      FormsModels.textFormFieldModel(context, phone, signupPhoneController, TextInputType.phone,
+                          focusNodePhone, 'Teléfono', FontAwesomeIcons.phone),
+                      space(context),
+                      FormsModels.textFormFieldModel(context, dni, signupCedulaController, TextInputType.number,
+                          focusNodeCedula, 'Cédula', FontAwesomeIcons.idCard),
+                      space(context),
+                      FormsModels.textFormFieldModel(context, role, signupRoleController, TextInputType.text,
+                          focusNodeRole, 'Rol', FontAwesomeIcons.user),
+                      space(context),
+                      FormsModels.passwordFormFieldModel(context, password, signupPasswordController, TextInputType.visiblePassword,
+                      focusNodePassword, 'Contraseña', FontAwesomeIcons.lock, _obscureTextPassword, _toggleSignup),
+                      space(context),
+                      FormsModels.passwordFormFieldModel(context, confirmPassword, signupConfirmPasswordController, TextInputType.visiblePassword,
+                          focusNodeConfirmPassword, "Confirmar contraseña", FontAwesomeIcons.lock, _obscureTextConfirmPassword, _toggleSignUpConfirm),
                     ],
                   ),
                 ),
@@ -342,6 +146,13 @@ class _SignUpState extends State<SignUp>{
     );
   }
 
+  Widget space(BuildContext context) {
+    return Container(
+      width: 250.0,
+      height: 1.0,
+      color: Colors.grey[400],
+    );
+  }
   void _toggleSignUpButton() {
     CustomSnackBar(context, const Text('Sign up pressed'));
   }

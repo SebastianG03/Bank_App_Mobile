@@ -1,8 +1,10 @@
+import 'package:bank_app_mobile/widgets/formsModels.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bank_app_mobile/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../model/models.dart';
 import '../screens/temp/custom_snack_bar.dart';
 
 
@@ -21,6 +23,9 @@ class _SignInState extends State<SignIn> {
   final FocusNode focusNodePassword = FocusNode();
 
   bool _obscureTextPassword = true;
+  late User user;
+  late String email;
+  late String password;
 
   @override
   void dispose() {
@@ -49,72 +54,15 @@ class _SignInState extends State<SignIn> {
                   height: 190.0,
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          focusNode: focusNodeEmail,
-                          controller: loginEmailController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(
-                            fontFamily: 'WorkSansSemiBold',
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Colors.black,
-                              size: 22.0,
-                            ),
-                            hintText: 'Email',
-                            hintStyle: TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 17.0,),
-                          ),
-                          onSubmitted: (_) {
-                            focusNodePassword.requestFocus();
-                          },
-                        ),
-                        ),
+                      FormsModels.textFormFieldModel(context, email, loginEmailController, TextInputType.emailAddress,
+                          focusNodeEmail, 'Email', FontAwesomeIcons.envelope),
                       Container(
                         width: 250.0,
                         height: 1.0,
                         color: Colors.grey[400],
                       ),
-                      Padding(
-                          padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextField(
-                            focusNode: focusNodePassword,
-                            controller: loginPasswordController,
-                            obscureText: _obscureTextPassword,
-                            style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black,
-                            ),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: const Icon(
-                                FontAwesomeIcons.lock,
-                                size: 22.0,
-                                color: Colors.black,
-                              ),
-                              hintText: 'Password',
-                              hintStyle: const TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 17.0,),
-                              suffixIcon: GestureDetector(
-                                onTap: _toggleLogin,
-                                child: Icon(
-                                  _obscureTextPassword ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
-                                  size: 15.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            onSubmitted: (_) {
-                              _toggleSignInButton();
-                            },
-                            textInputAction: TextInputAction.go,
-                          ),
-                      )
+                      FormsModels.passwordFormFieldModel(context, password, loginPasswordController, TextInputType.visiblePassword,
+                          focusNodePassword, 'Contraseña', FontAwesomeIcons.lock, _obscureTextPassword, _toggleLogin),
                     ],
                   ),
                 ),
@@ -183,6 +131,10 @@ class _SignInState extends State<SignIn> {
         ],
       ),
     );
+  }
+
+  void debug(dynamic value) {
+    print('$value');
   }
 
   void _toggleSignInButton() {
