@@ -11,7 +11,11 @@ class EstadosCuenta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  CardModel(bankAccount: bankAccount).buildCardModel(context);
+    return  Container(
+      height: 100,
+      width: 400,
+      child: CardModel(bankAccount: bankAccount).buildCardModel(context),
+    );
   }
 }
 
@@ -21,43 +25,46 @@ class CardModel {
   CardModel({required this.bankAccount});
 
   Widget buildCardModel(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HistorialTransferencias())),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              'Cuenta de ahorro',
-              style: TextStyle(fontSize: 20),
-            ),
-            Text(
-              '${bankAccount.accountNumber}',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-            Container(width: 100,),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: GestureDetector(
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HistorialTransferencias())),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  const Text(
+                    'Cuenta de ahorro',
+                    style: TextStyle(fontSize: 20),
+                  ),
                   Text(
-                    '${bankAccount.accountAmount}',
+                    '${bankAccount.accountNumber}',
                     style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.grey,
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+              Container(width: MediaQuery.of(context).size.width * 0.05,),
+              Text(
+                'USD ' '${bankAccount.accountAmount}',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

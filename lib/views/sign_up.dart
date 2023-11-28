@@ -1,8 +1,10 @@
-import 'package:bank_app_mobile/screens/temp/custom_snack_bar.dart';
-import 'package:bank_app_mobile/theme.dart';
-import 'package:bank_app_mobile/widgets/formsModels.dart';
+import 'package:bank_app_mobile/model/models.dart';
+import 'package:bank_app_mobile/theme/theme.dart';
+import 'package:bank_app_mobile/widgets/text_forms_models.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../screens/user/home_screen.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -31,13 +33,8 @@ class _SignUpState extends State<SignUp>{
   TextEditingController signupCedulaController = TextEditingController();
   TextEditingController signupRoleController = TextEditingController();
 
-  late String name;
-  late String email;
-  late String password;
-  late String confirmPassword;
-  late String phone;
-  late String role;
-  late String dni;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final Map<String, String> formValues = {};
 
   @override
   void dispose() {
@@ -53,96 +50,37 @@ class _SignUpState extends State<SignUp>{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 23.0),
-      child: Column(
-        children: <Widget>[
-          Stack(
-            alignment: Alignment.topCenter,
-            children: <Widget>[
-              Card(
-                elevation: 2.0,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Container(
-                  width: 300.0,
-                  height: 360.0,
-                  child: Column(
-                    children: <Widget>[
-                      FormsModels.textFormFieldModel(context, name, signupNameController, TextInputType.text, focusNodeName
-                          , 'Nombre', FontAwesomeIcons.person),
-                      space(context),
-                      FormsModels.textFormFieldModel(context, email, signupEmailController, TextInputType.emailAddress,
-                          focusNodeEmail, 'Correo electrónico', FontAwesomeIcons.envelope),
-                      space(context),
-                      FormsModels.textFormFieldModel(context, phone, signupPhoneController, TextInputType.phone,
-                          focusNodePhone, 'Teléfono', FontAwesomeIcons.phone),
-                      space(context),
-                      FormsModels.textFormFieldModel(context, dni, signupCedulaController, TextInputType.number,
-                          focusNodeCedula, 'Cédula', FontAwesomeIcons.idCard),
-                      space(context),
-                      FormsModels.textFormFieldModel(context, role, signupRoleController, TextInputType.text,
-                          focusNodeRole, 'Rol', FontAwesomeIcons.user),
-                      space(context),
-                      FormsModels.passwordFormFieldModel(context, password, signupPasswordController, TextInputType.visiblePassword,
-                      focusNodePassword, 'Contraseña', FontAwesomeIcons.lock, _obscureTextPassword, _toggleSignup),
-                      space(context),
-                      FormsModels.passwordFormFieldModel(context, confirmPassword, signupConfirmPasswordController, TextInputType.visiblePassword,
-                          focusNodeConfirmPassword, "Confirmar contraseña", FontAwesomeIcons.lock, _obscureTextConfirmPassword, _toggleSignUpConfirm),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 340.0),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: CustomTheme.loginGradientStart,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
+    return Expanded(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(top: 23.0),
+        child: Column(
+          children: <Widget>[
+            SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: <Widget>[
+                    Card(
+                      elevation: 2.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: _registerForm(context),
                     ),
-                    BoxShadow(
-                      color: CustomTheme.loginGradientEnd,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
+                    Container(
+                      margin: const EdgeInsets.only(top: 550.0),
+                      decoration: CustomTheme.loginPageBtnContainerDecoration,
+                      child: _registerButton(context),
                     ),
                   ],
-                  gradient: LinearGradient(
-                    colors: <Color>[
-                      CustomTheme.loginGradientEnd,
-                      CustomTheme.loginGradientStart
-                    ],
-                    begin: FractionalOffset(0.2, 0.2),
-                    end: FractionalOffset(1.0, 1.0),
-                    stops: <double>[0.0, 1.0],
-                    tileMode: TileMode.clamp
-                  ),
                 ),
-                child: MaterialButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: CustomTheme.loginGradientEnd,
-                  onPressed: _toggleSignUpButton,
-                  child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        'Iniciar Sesión',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                          fontFamily: 'WorkSansBold',
-                        ),
-                      ),
-                  ),
-                ),
-              )
-            ],
-          )
-        ],
-      )
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -152,9 +90,6 @@ class _SignUpState extends State<SignUp>{
       height: 1.0,
       color: Colors.grey[400],
     );
-  }
-  void _toggleSignUpButton() {
-    CustomSnackBar(context, const Text('Sign up pressed'));
   }
 
   void _toggleSignup() {
@@ -167,5 +102,59 @@ class _SignUpState extends State<SignUp>{
     setState(() {
       _obscureTextConfirmPassword = !_obscureTextConfirmPassword;
     });
+  }
+
+  Widget _registerForm(BuildContext context) {
+    return SizedBox(
+      width: 300.0,
+      height: 600.0,
+        child: Column(
+          children: <Widget>[
+            TextFormsModels.textForm(controller: signupNameController, textInputType: TextInputType.text, focusNode: focusNodeName
+                , label: 'Nombre', icon: FontAwesomeIcons.person, formProperty: 'name', formValues: formValues).build(context),
+            space(context),
+            TextFormsModels.textForm(controller: signupEmailController, textInputType: TextInputType.emailAddress, focusNode: focusNodeEmail
+                , label: 'Correo electrónico', icon: FontAwesomeIcons.envelope, formProperty: 'email', formValues: formValues).build(context),
+            space(context),
+            TextFormsModels.textForm(controller: signupPhoneController, textInputType: TextInputType.phone, focusNode: focusNodePhone
+                , label: 'Teléfono', icon: FontAwesomeIcons.phone, formProperty: 'phone', formValues: formValues).build(context),
+            space(context),
+            TextFormsModels.textForm(controller: signupCedulaController, textInputType: TextInputType.number, focusNode: focusNodeCedula
+                , label: 'Cédula', icon: FontAwesomeIcons.idCard, formProperty: 'dni', formValues: formValues).build(context),
+            space(context),
+            TextFormsModels.passwordForm(controller: signupPasswordController, textInputType: TextInputType.visiblePassword, focusNode: focusNodePassword,
+                label: 'Contraseña', icon: FontAwesomeIcons.lock, obscureText: _obscureTextPassword, tap: _toggleSignup, formProperty: 'password',
+                formValues: formValues).build(context),
+            space(context),
+            TextFormsModels.passwordForm(controller: signupConfirmPasswordController, textInputType: TextInputType.visiblePassword
+                , focusNode: focusNodeConfirmPassword, label: "Confirmar contraseña", icon: FontAwesomeIcons.lock
+                , obscureText: _obscureTextConfirmPassword, tap: _toggleSignUpConfirm, formProperty: 'confirmPassword', formValues: formValues).build(context),
+          ],
+        ),
+    );
+  }
+
+  Widget _registerButton(BuildContext context) {
+    return MaterialButton(
+      highlightColor: Colors.transparent,
+      splashColor: CustomTheme.loginGradientEnd,
+      onPressed: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        print(formValues);
+      },
+          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(user: User.create(1, 'Usuario', 'email@gmail.com',
+          // '1234567', '0993972', 'Cliente', '2348029358023'), bankAccount: BankAccount.create(1, 1, 1, 25.0)))),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+        child: Text(
+          'Iniciar Sesión',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25.0,
+            fontFamily: 'WorkSansBold',
+          ),
+        ),
+      ),
+    );
   }
 }

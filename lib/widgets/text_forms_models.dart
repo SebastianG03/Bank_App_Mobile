@@ -1,31 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class FormsModels {
+class TextFormsModels extends StatelessWidget {
+  TextEditingController controller;
+  TextInputType textInputType;
+  FocusNode focusNode;
+  String label;
+  IconData icon;
+  bool obscureText = false;
+  Function()? tap;
+  bool textForm;
 
-  static Widget textFormFieldModel(BuildContext context, dynamic saveValue,TextEditingController controller, TextInputType textInputType,
-      FocusNode focusNode, String label, IconData icon) {
+  final String formProperty;
+  final Map<String, String> formValues;
+
+  TextFormsModels.textForm({super.key,required this.controller, required this.textInputType,
+    required this.focusNode, required this.label, required this.icon, this.textForm = true,
+    required this.formProperty, required this.formValues});
+
+
+  TextFormsModels.passwordForm({super.key, required this.controller, required this.textInputType, required this.focusNode,
+    required this.label, required this.icon, required this.obscureText, required this.tap,
+    this.textForm = false, required this.formProperty, required this.formValues});
+
+  @override
+  Widget build(BuildContext context) {
+    return textForm ? _textFormFieldModel(context,  controller, textInputType, focusNode, label, icon, formProperty, formValues) :
+    _passwordFormFieldModel(context, controller, textInputType, focusNode, label, icon, obscureText, tap, formProperty, formValues);
+  }
+
+  static Widget _textFormFieldModel(BuildContext context, TextEditingController controller, TextInputType textInputType,
+      FocusNode focusNode, String label, IconData icon, String formProperty, Map<String, String> formValues) {
     //, String Function(String?) validation,
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
       child: TextFormField(
         autofocus: true,
         textCapitalization: TextCapitalization.words,
-        onChanged: (value) => saveValue = value,
         controller: controller,
         keyboardType: textInputType,
         focusNode: focusNode,
+        onChanged: (value) => formValues[formProperty] = value,
         //validator: (value) => validation(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           labelText: label,
           icon: Icon(icon),
-          border: const OutlineInputBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
-              )
-          ),
         ),
         style: const TextStyle(
           fontFamily: 'WorkSansSemiBold',
@@ -36,19 +56,19 @@ class FormsModels {
     );
   }
 
-  static Widget passwordFormFieldModel(BuildContext context, dynamic saveValue,TextEditingController controller, TextInputType textInputType,
-      FocusNode focusNode, String label, IconData icon, bool obscureText, Function()? tap) {
+  static Widget _passwordFormFieldModel(BuildContext context, TextEditingController controller, TextInputType textInputType,
+      FocusNode focusNode, String label, IconData icon, bool obscureText, Function()? tap, String formProperty, Map<String, String> formValues) {
     //, String Function(String?) validation,
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
       child: TextFormField(
         autofocus: true,
         textCapitalization: TextCapitalization.words,
-        onChanged: (value) => saveValue = value,
         controller: controller,
         keyboardType: textInputType,
         focusNode: focusNode,
         obscureText: obscureText,
+        onChanged: (value) => formValues[formProperty] = value,
         //validator: (value) => validation(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
@@ -61,12 +81,6 @@ class FormsModels {
               size: 15.0,
               color: Colors.black,
             ),
-          ),
-          border: const OutlineInputBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
-              )
           ),
         ),
         style: const TextStyle(

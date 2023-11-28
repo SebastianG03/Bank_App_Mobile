@@ -1,5 +1,5 @@
 
-import 'package:bank_app_mobile/theme.dart';
+import 'package:bank_app_mobile/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/bubble_indicator_painter.dart';

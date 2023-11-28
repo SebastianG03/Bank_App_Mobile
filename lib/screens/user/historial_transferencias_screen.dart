@@ -5,9 +5,18 @@ class HistorialTransferencias extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Historial de transferencias'),
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              const Text('Historial de transferencias'),
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text ('Volver')),
+            ],
+          ),
+        ),
       ),
     );
   }

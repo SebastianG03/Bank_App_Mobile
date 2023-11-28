@@ -1,4 +1,4 @@
-import 'package:bank_app_mobile/theme.dart';
+import 'package:bank_app_mobile/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/models.dart';
@@ -20,16 +20,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: [
-            EstadosCuenta(user: widget.user, bankAccount: widget.bankAccount),
-            TransferenciasView(user: widget.user, bankAccount: widget.bankAccount),
-            CuentaUsuarioView(user: widget.user, bankAccount: widget.bankAccount),
-          ],
-        ),
-        bottomNavigationBar: bottomBar(context),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Scaffold(
+          body: IndexedStack(
+            index: _selectedIndex,
+            children: [
+              EstadosCuenta(user: widget.user, bankAccount: widget.bankAccount),
+              TransferenciasView(user: widget.user, bankAccount: widget.bankAccount),
+              CuentaUsuarioView(user: widget.user, bankAccount: widget.bankAccount),
+            ],
+          ),
+          bottomNavigationBar: bottomBar(context),
+      ),
     );
   }
 
@@ -38,8 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget bottomBar(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
-      type: BottomNavigationBarType.shifting,
+      type: BottomNavigationBarType.fixed,
       selectedItemColor: CustomTheme.selected,
+      backgroundColor: CustomTheme.appBar,
       iconSize: 40,
       onTap: (value) => setState(() => _selectedIndex = value),
       items: <BottomNavigationBarItem>[
