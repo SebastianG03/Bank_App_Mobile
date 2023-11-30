@@ -1,4 +1,5 @@
 import 'package:bank_app_mobile/screens/user/login_screen.dart';
+import 'package:bank_app_mobile/screens/user/login_screen2.dart';
 import 'package:bank_app_mobile/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tu Banco Online',
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
+      home: const LoginScreen2(),
       theme: CustomTheme.lightTheme,
       //initialRoute: ,
       //routes: ,

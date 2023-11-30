@@ -15,8 +15,10 @@ class AppRoutes {
 
   static const initialRoute = 'login';
 
+
   static Map<String, Widget Function(BuildContext)> routes = {
     'login': (BuildContext context) => const LoginScreen(),
+
   };
 
 }

@@ -5,6 +5,7 @@ import '../../model/models.dart';
 import 'package:bank_app_mobile/views/views_user.dart';
 import 'package:bank_app_mobile/utils/app_bar_items.dart';
 
+
 class HomeScreen extends StatefulWidget {
   BankAccount bankAccount;
   User user;

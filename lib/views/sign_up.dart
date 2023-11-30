@@ -1,10 +1,11 @@
 import 'package:bank_app_mobile/model/models.dart';
 import 'package:bank_app_mobile/theme/theme.dart';
+import 'package:bank_app_mobile/utils/util.dart';
+import 'package:bank_app_mobile/widgets/material_button_model.dart';
 import 'package:bank_app_mobile/widgets/text_forms_models.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../screens/user/home_screen.dart';
+import '../widgets/alert_model.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -34,7 +35,16 @@ class _SignUpState extends State<SignUp>{
   TextEditingController signupRoleController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final Map<String, String> formValues = {};
+  final Map<String, String> formValues = {
+    'name': '',
+    'email': '',
+    'password': '',
+    'confirmPassword': '',
+    'phone': '',
+    'cedula': '',
+    'role': 'client',
+  };
+  Util util = Util();
 
   @override
   void dispose() {
@@ -111,50 +121,59 @@ class _SignUpState extends State<SignUp>{
         child: Column(
           children: <Widget>[
             TextFormsModels.textForm(controller: signupNameController, textInputType: TextInputType.text, focusNode: focusNodeName
-                , label: 'Nombre', icon: FontAwesomeIcons.person, formProperty: 'name', formValues: formValues).build(context),
+                , nextFocusNode: focusNodeEmail, label: 'Nombre', icon: FontAwesomeIcons.person, formProperty: 'name', formValues: formValues),
             space(context),
             TextFormsModels.textForm(controller: signupEmailController, textInputType: TextInputType.emailAddress, focusNode: focusNodeEmail
-                , label: 'Correo electrónico', icon: FontAwesomeIcons.envelope, formProperty: 'email', formValues: formValues).build(context),
+                , nextFocusNode: focusNodePhone, label: 'Correo electrónico', icon: FontAwesomeIcons.envelope, formProperty: 'email', formValues: formValues),
             space(context),
             TextFormsModels.textForm(controller: signupPhoneController, textInputType: TextInputType.phone, focusNode: focusNodePhone
-                , label: 'Teléfono', icon: FontAwesomeIcons.phone, formProperty: 'phone', formValues: formValues).build(context),
+               , nextFocusNode: focusNodeCedula, label: 'Teléfono', icon: FontAwesomeIcons.phone, formProperty: 'phone', formValues: formValues),
             space(context),
             TextFormsModels.textForm(controller: signupCedulaController, textInputType: TextInputType.number, focusNode: focusNodeCedula
-                , label: 'Cédula', icon: FontAwesomeIcons.idCard, formProperty: 'dni', formValues: formValues).build(context),
+                , nextFocusNode: focusNodePassword, label: 'Cédula', icon: FontAwesomeIcons.idCard, formProperty: 'dni', formValues: formValues),
             space(context),
             TextFormsModels.passwordForm(controller: signupPasswordController, textInputType: TextInputType.visiblePassword, focusNode: focusNodePassword,
-                label: 'Contraseña', icon: FontAwesomeIcons.lock, obscureText: _obscureTextPassword, tap: _toggleSignup, formProperty: 'password',
-                formValues: formValues).build(context),
+                 nextFocusNode: focusNodeConfirmPassword, label: 'Contraseña', icon: FontAwesomeIcons.lock, obscureText: _obscureTextPassword, tap: _toggleSignup, formProperty: 'password',
+                formValues: formValues),
             space(context),
             TextFormsModels.passwordForm(controller: signupConfirmPasswordController, textInputType: TextInputType.visiblePassword
                 , focusNode: focusNodeConfirmPassword, label: "Confirmar contraseña", icon: FontAwesomeIcons.lock
-                , obscureText: _obscureTextConfirmPassword, tap: _toggleSignUpConfirm, formProperty: 'confirmPassword', formValues: formValues).build(context),
+                , obscureText: _obscureTextConfirmPassword, tap: _toggleSignUpConfirm, formProperty: 'confirmPassword', formValues: formValues),
           ],
         ),
     );
   }
 
   Widget _registerButton(BuildContext context) {
-    return MaterialButton(
-      highlightColor: Colors.transparent,
-      splashColor: CustomTheme.loginGradientEnd,
-      onPressed: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-        print(formValues);
-      },
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(user: User.create(1, 'Usuario', 'email@gmail.com',
-          // '1234567', '0993972', 'Cliente', '2348029358023'), bankAccount: BankAccount.create(1, 1, 1, 25.0)))),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
-        child: Text(
-          'Iniciar Sesión',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 25.0,
-            fontFamily: 'WorkSansBold',
-          ),
-        ),
-      ),
-    );
+    return MaterialButtonModel(highlightColor: Colors.transparent, splashColor: CustomTheme.loginGradientEnd
+        , content: 'Crear Cuenta', onPressed: () => _signupButtonOnPressed, padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+        textColor: Colors.white, fontSize: 25.0, fontFamily: 'WorkSansBold');
+  }
+
+  void _signupButtonOnPressed() {
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    if(formValues.isEmpty || formValues['name']!.isEmpty || formValues['email']!.isEmpty
+        || formValues['password']!.isEmpty ||  formValues['confirmPassword']!.isEmpty || formValues['phone']!.isEmpty
+        || formValues['dni']!.isEmpty ) {
+      Alerts.androidAlertDialog(context: context, title: 'No se pudo registrar el usuario',
+          message: 'Por favor llene todos los campos');
+    } else if(formValues['password'] != formValues['confirmPassword']) {
+      Alerts.androidAlertDialog(context: context, title: 'No se pudo registrar el usuario',
+          message: 'Las contraseñas no coinciden');
+    } else {
+
+      User user = User(idUser: util.users.length, name: formValues['name']!, email: formValues['email']!,
+          password: formValues['password']!, phone: formValues['phone']!, role: formValues['role']!, dni: formValues['dni']!);
+      BankAccount bankAccount = BankAccount(idAccount: util.bankAccounts.length,
+          idUser: user.idUser!, accountNumber: Util().bankAccounts.length, accountAmount: 0.0);
+      print('email: ${formValues['email']}');
+      print('password: ${formValues['password']}');
+
+      util.users.add(user);
+      util.bankAccounts.add(bankAccount);
+
+      Alerts.androidAlertDialog(context: context, title: 'Usuario registrado con éxito', message: 'Por favor inicie sesión');
+    }
   }
 }

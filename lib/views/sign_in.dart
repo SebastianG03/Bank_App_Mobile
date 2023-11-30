@@ -1,11 +1,13 @@
-import 'package:bank_app_mobile/widgets/text_forms_models.dart';
+import 'package:bank_app_mobile/widgets/material_button_model.dart';
 import 'package:flutter/material.dart';
-
-import 'package:bank_app_mobile/theme/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:bank_app_mobile/theme/theme.dart';
+import 'package:bank_app_mobile/widgets/text_forms_models.dart';
 import '../model/models.dart';
 import '../screens/user/home_screen.dart';
+import '../utils/util.dart';
+import '../widgets/alert_model.dart';
 
 
 class SignIn extends StatefulWidget {
@@ -24,7 +26,11 @@ class _SignInState extends State<SignIn> {
 
   bool _obscureTextPassword = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final Map<String, String> formValues = {};
+  final Map<String, String> formValues = {
+    'email': '',
+    'password': '',
+  };
+  Util util = Util();
 
   @override
   void dispose() {
@@ -55,11 +61,12 @@ class _SignInState extends State<SignIn> {
                     width: 300.0,
                     height: 190.0,
                     child: Form(
+                      key: _formKey,
                       child: Column(
                         children: <Widget>[
                           TextFormsModels.textForm(controller: loginEmailController, textInputType: TextInputType.emailAddress
-                              , focusNode: focusNodeEmail, label: 'Email', icon: FontAwesomeIcons.envelope
-                              , formProperty: 'email', formValues: formValues).build(context),
+                              , focusNode: focusNodeEmail, nextFocusNode: focusNodePassword, label: 'Email', icon: FontAwesomeIcons.envelope
+                              , formProperty: 'email', formValues: formValues),
                           Container(
                             width: 250.0,
                             height: 1.0,
@@ -67,34 +74,26 @@ class _SignInState extends State<SignIn> {
                           ),
                           TextFormsModels.passwordForm(controller: loginPasswordController, textInputType: TextInputType.visiblePassword
                               , focusNode: focusNodePassword, label: 'Contraseña', icon: FontAwesomeIcons.lock
-                              , obscureText: _obscureTextPassword, tap: _toggleLogin, formProperty: 'password', formValues: formValues).build(context),
+                              , obscureText: _obscureTextPassword, tap: _toggleLogin, formProperty: 'password', formValues: formValues),
                         ],
                       ),
                     ),
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 170.0),
+                  margin: const EdgeInsets.only(top: 185.0),
                   decoration: CustomTheme.loginPageBtnContainerDecoration,
-                    child: MaterialButton(
+                    child: MaterialButtonModel(
                       highlightColor: Colors.transparent,
                       splashColor: CustomTheme.loginGradientEnd,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: 'WorkSansBold',
-                          ),
-                        ),
-                      ),
-                      onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(user: User.create(1, 'Usuario', 'email@gmail.com',
-                          '1234567', '0993972', 'Cliente', '2348029358023'), bankAccount: BankAccount.create(1, 1, 1, 25.0)))),
-
-                    ),
-                  )
+                      content: 'Iniciar Sesión',
+                      textColor: Colors.white,
+                      fontSize: 25.0,
+                      fontFamily: 'WorkSansBold',
+                      onPressed: () => _signinButtonOnPressed,
+                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+                  ),
+                ),
               ],
             ),
             Padding(
@@ -122,5 +121,30 @@ class _SignInState extends State<SignIn> {
     setState(() {
       _obscureTextPassword = !_obscureTextPassword;
     });
+  }
+
+  void _signinButtonOnPressed() {
+    if(formValues.isEmpty || formValues['email']!.isEmpty || formValues['password']!.isEmpty) {
+      Alerts.androidAlertDialog(context: context, title: 'No se pudo iniciar sesión',
+        message: 'Por favor llene todos los campos');
+    } else {
+      User user = util.users.firstWhere((element) => element.email == formValues['email']! && element.password == formValues['password']!);
+      BankAccount bankAccount = util.bankAccounts.firstWhere((element) => element.idUser == user.idUser);
+      if(user != null && bankAccount != null) {
+
+        print('email: ${formValues['email']}');
+        print('password: ${formValues['password']}');
+
+        print('user email: ${user.email}');
+        print('user password: ${user.password}');
+
+
+
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(user: user, bankAccount: bankAccount)));
+      } else {
+        Alerts.androidAlertDialog(context: context, title: 'No se pudo iniciar sesión',
+          message: 'Credenciales incorrectas');
+      }
+    }
   }
 }

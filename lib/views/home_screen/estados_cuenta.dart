@@ -14,22 +14,24 @@ class EstadosCuenta extends StatelessWidget {
     return  Container(
       height: 100,
       width: 400,
-      child: CardModel(bankAccount: bankAccount).buildCardModel(context),
+      child: _CardModel(bankAccount: bankAccount, user: user).buildCardModel(context),
     );
   }
 }
 
-class CardModel {
+class _CardModel {
   BankAccount bankAccount;
+  User user;
 
-  CardModel({required this.bankAccount});
+  _CardModel({required this.bankAccount, required this.user});
 
   Widget buildCardModel(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: GestureDetector(
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HistorialTransferencias())),
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>
+            HistorialTransferencias(bankAccount: bankAccount, user: user,))),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
