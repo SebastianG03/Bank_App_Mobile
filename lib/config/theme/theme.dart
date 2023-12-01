@@ -57,6 +57,7 @@ class CustomTheme {
     ),
   );
 
+
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     inputDecorationTheme: const InputDecorationTheme(
       enabledBorder: OutlineInputBorder(

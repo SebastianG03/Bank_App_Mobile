@@ -1,8 +1,8 @@
-import 'package:bank_app_mobile/screens/user/login_screen.dart';
-import 'package:bank_app_mobile/screens/user/login_screen2.dart';
-import 'package:bank_app_mobile/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'config/routes/app_router.dart';
+import 'config/theme/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,17 +10,19 @@ void main() {
     DeviceOrientation.portraitUp
   ]);
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Tu Banco Online',
       // home: const LoginScreen(),
-      home: const LoginScreen2(),
+      routerConfig: appRouter,
       theme: CustomTheme.lightTheme,
       //initialRoute: ,
       //routes: ,
