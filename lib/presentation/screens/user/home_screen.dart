@@ -1,14 +1,15 @@
 import 'package:bank_app_mobile/config/theme/theme.dart';
 import 'package:bank_app_mobile/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/models.dart';
 import '../../views/views_user.dart';
 
 
-class HomeScreen extends StatefulWidget {
-  late BankAccount bankAccount;
-  late User user;
+class HomeScreen extends ConsumerStatefulWidget {
+  late final BankAccount bankAccount;
+  late final User user;
   static const name = 'home';
 
   HomeScreen({super.key, required int idUser}) {
@@ -16,12 +17,12 @@ class HomeScreen extends StatefulWidget {
     bankAccount = Util().bankAccounts.firstWhere((element) => element.idUser == idUser);
   }
 
-
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
+
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _selectedIndex = 0;
 
   @override

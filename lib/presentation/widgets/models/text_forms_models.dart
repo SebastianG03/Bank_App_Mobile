@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TextFormsModels extends StatelessWidget {
-  TextEditingController controller;
-  TextInputType textInputType;
-  FocusNode focusNode;
-  FocusNode? nextFocusNode;
-  String label;
-  IconData icon;
+  final TextEditingController controller;
+  final TextInputType textInputType;
+  final FocusNode focusNode;
+  final FocusNode? nextFocusNode;
+  final String label;
+  final IconData icon;
   bool obscureText = false;
   Function()? tap;
-  bool textForm;
+  final bool textForm;
 
   final String formProperty;
   final Map<String, String> formValues;

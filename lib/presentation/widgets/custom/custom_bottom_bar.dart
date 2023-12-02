@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../config/theme/theme.dart';
-import '../utils/utils.dart';
-import '../views/views_user.dart';
+import '../../../config/theme/theme.dart';
+import '../../utils/utils.dart';
+import '../../views/views_user.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final int idUser;

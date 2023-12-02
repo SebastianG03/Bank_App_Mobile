@@ -15,14 +15,11 @@ final appRouter = GoRouter(
       name: HomeScreen.name,
       path: '/home/:idUser',
       builder: (context, state) => HomeScreen(idUser: int.parse(state.pathParameters['idUser']!)),
-      routes: [
-        GoRoute(
-          name: HistorialTransferencias.name,
-          path: 'historial_transferencias/:idBankAccount',
-          builder: (context, state) => HistorialTransferencias(idUser: int.parse(state.pathParameters['idUser']!),
-              idBankAccount: int.parse(state.pathParameters['idBankAccount']!)),
-        )
-      ],
     ),
+    GoRoute(
+      name: HistorialTransferencias.name,
+      path: 'historial_transferencias/:idBankAccount',
+      builder: (context, state) => HistorialTransferencias(idBankAccount: int.parse(state.pathParameters['idBankAccount']!)),
+    )
   ],
 );

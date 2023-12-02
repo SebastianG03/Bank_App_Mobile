@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bank_app_mobile/screens/user/historial_transferencias_screen.dart';
-import 'package:go_router/go_router.dart';
-
-import '../../../../model/models.dart';
+import '../../model/models.dart';
 import '../../utils/utils.dart';
+import '../../widgets/widgets.dart' show BAccountCardModel;
 
 class EstadosCuenta extends StatelessWidget {
   late User user;
@@ -22,62 +20,7 @@ class EstadosCuenta extends StatelessWidget {
       width: 400,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: _CardModel(bankAccount: bankAccount, user: user).buildCardModel(context),
-      ),
-    );
-  }
-}
-
-class _CardModel {
-  BankAccount bankAccount;
-  User user;
-
-  _CardModel({required this.bankAccount, required this.user});
-
-  Widget buildCardModel(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: GestureDetector(
-        onTap: () => context.pushNamed(HistorialTransferencias.name,
-            pathParameters: {'idAccount': '${bankAccount.idAccount}'}),
-        child: Card(
-          elevation: 2.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'Cuenta de ahorro',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    '${bankAccount.accountNumber}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-              Container(width: MediaQuery.of(context).size.width * 0.05,),
-              Text(
-                'USD ' '${bankAccount.accountAmount}',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: BAccountCardModel(bankAccount: bankAccount, user: user).buildCardModel(context),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../config/theme/theme.dart';
-import '../model/models.dart';
+import '../../../config/theme/theme.dart';
+import '../../model/models.dart';
 
 class DetallesTransferencia {
 

@@ -1,7 +1,7 @@
+import 'package:bank_app_mobile/config/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../config/theme/theme.dart';
 import 'package:go_router/go_router.dart';
 import '../../model/models.dart';
 import '../../screens/screens.dart';

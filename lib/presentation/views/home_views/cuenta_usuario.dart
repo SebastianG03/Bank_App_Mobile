@@ -5,8 +5,8 @@ import '../../utils/utils.dart';
 
 class CuentaUsuarioView extends StatelessWidget {
 
-  late BankAccount bankAccount;
-  late User user;
+  late final BankAccount bankAccount;
+  late final User user;
   List<String> option = ["Modificar Cuenta", "Eliminar Cuenta", "Cerrar Sesión "];
   static const name = 'Cuenta de usuario';
 

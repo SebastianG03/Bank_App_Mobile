@@ -6,22 +6,16 @@ import '../../utils/util.dart';
 import '../../widgets/widgets.dart';
 
 class HistorialTransferencias extends StatelessWidget {
-  late BankAccount bankAccount;
-  late User user;
+  late final BankAccount bankAccount;
   static const name = 'historial_transferencias';
   final Util util = Util();
   List<Transferencia> transferencias = [];
-  bool isEmpty = true;
+  late bool isEmpty;
 
-  HistorialTransferencias({super.key, required int idBankAccount, required int idUser}) {
-    user = util.users.firstWhere((element) => element.idUser == idUser);
+  HistorialTransferencias({super.key, required int idBankAccount}) {
     bankAccount = util.bankAccounts.firstWhere((element) => element.idAccount == idBankAccount);
     transferencias = util.transferencias.where((element) => element.idAccountSender == bankAccount.idAccount || element.idAccountReceiver == bankAccount.idAccount).toList();
-    if(transferencias.isEmpty) {
-      isEmpty = true;
-    } else {
-      isEmpty = false;
-    }
+    isEmpty = transferencias.isEmpty ? true : false;
   }
 
   @override

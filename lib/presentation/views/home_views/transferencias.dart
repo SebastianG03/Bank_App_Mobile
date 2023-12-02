@@ -1,10 +1,10 @@
-import 'package:bank_app_mobile/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../config/theme/theme.dart';
 import '../../model/models.dart';
-import '../../config/theme/theme.dart';
 import '../../utils/utils.dart';
+import '../../widgets/widgets.dart';
 
 
 class TransferenciasView extends StatefulWidget {

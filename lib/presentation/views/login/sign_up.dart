@@ -1,8 +1,9 @@
-import 'package:bank_app_mobile/model/models.dart';
-import 'package:bank_app_mobile/utils/util.dart';
+
+import 'package:bank_app_mobile/config/theme/theme.dart';
+import 'package:bank_app_mobile/presentation/model/models.dart';
+import 'package:bank_app_mobile/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../config/theme/theme.dart';
 import '../../widgets/widgets.dart';
 
 class SignUp extends StatefulWidget {

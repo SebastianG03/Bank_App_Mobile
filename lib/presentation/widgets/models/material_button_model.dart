@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 class MaterialButtonModel extends StatelessWidget {
 
   Color? highlightColor = Colors.transparent;
-  Color? splashColor;
-  Color? buttonColor;
-  int? model;
-  String content;
-  Color textColor;
+  final Color? splashColor;
+  final Color? buttonColor;
+  final int? model;
+  final String content;
+  final Color textColor;
   double fontSize = 25.0;
   String? fontFamily = 'WorkSansBold';
-  Function onPressed;
-  EdgeInsetsGeometry padding;
+  final Function onPressed;
+  final EdgeInsetsGeometry padding;
 
 
   MaterialButtonModel({super.key , this.model = 1, this.highlightColor, this.splashColor, this.buttonColor, required this.content,
