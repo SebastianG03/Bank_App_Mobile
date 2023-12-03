@@ -7,7 +7,7 @@ import '../../model/models.dart';
 import '../../views/views_user.dart';
 
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends StatefulWidget {
   late final BankAccount bankAccount;
   late final User user;
   static const name = 'home';
@@ -18,11 +18,10 @@ class HomeScreen extends ConsumerStatefulWidget {
   }
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
-
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   @override
@@ -31,6 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Scaffold(
+        // appBar: AppBar(backgroundColor: CustomTheme.appBar),
         body: IndexedStack(
           index: _selectedIndex,
           children: [

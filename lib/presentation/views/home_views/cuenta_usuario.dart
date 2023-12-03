@@ -21,10 +21,13 @@ class CuentaUsuarioView extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: ListView.separated(
+        padding: const EdgeInsets.only(left: 10, top: 30, right: 10),
+        scrollDirection: Axis.vertical,
         separatorBuilder: (_, __) => const Divider(),
         itemCount: option.length,
         itemBuilder: (context, i) => ListTile(
-          title: Text(option[i], style: const TextStyle(fontSize: 20),),
+          title: Text(option[i], style: const TextStyle(fontSize: 18),),
+          trailing: const Icon(Icons.arrow_forward_ios_outlined),
         ),
       ),
     );

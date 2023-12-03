@@ -18,7 +18,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       name: HistorialTransferencias.name,
-      path: 'historial_transferencias/:idBankAccount',
+      path: '/historial_transferencias/:idBankAccount',
       builder: (context, state) => HistorialTransferencias(idBankAccount: int.parse(state.pathParameters['idBankAccount']!)),
     )
   ],

@@ -59,6 +59,8 @@ class _SignUpState extends State<SignUp>{
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 30.0),
       physics: const ClampingScrollPhysics(),
@@ -83,7 +85,7 @@ class _SignUpState extends State<SignUp>{
                     child: _registerForm(context),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 550.0),
+                    margin: EdgeInsetsDirectional.only(top: height * 0.8),
                     decoration: CustomTheme.loginPageBtnContainerDecoration,
                     child: _registerButton(context),
                   ),
@@ -91,6 +93,7 @@ class _SignUpState extends State<SignUp>{
               ),
             ),
           ),
+          const SizedBox(height: 50,),
         ],
       ),
     );

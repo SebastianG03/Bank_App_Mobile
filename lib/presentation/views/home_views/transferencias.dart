@@ -74,7 +74,7 @@ class _TransferenciasViewState extends State<TransferenciasView> {
                   icon: FontAwesomeIcons.idCard,
                   formProperty: 'cuentaReceptora',
                   formValues: formValues),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
               TextFormsModels.textForm(controller: montoController,
                   textInputType: TextInputType.number,
                   focusNode: focusMonto
@@ -83,7 +83,7 @@ class _TransferenciasViewState extends State<TransferenciasView> {
                   icon: FontAwesomeIcons.dollarSign,
                   formProperty: 'monto',
                   formValues: formValues),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,

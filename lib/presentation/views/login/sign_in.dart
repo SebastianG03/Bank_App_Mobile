@@ -40,72 +40,32 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 23.0),
       physics: const ClampingScrollPhysics(),
       scrollDirection: Axis.vertical,
       child: Column(
+        verticalDirection: VerticalDirection.down,
         children: <Widget>[
           Stack(
             alignment: Alignment.topCenter,
             children: <Widget>[
-              Card(
-                elevation: 2.0,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: SizedBox(
-                  width: 300.0,
-                  height: 190.0,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        TextFormsModels.textForm(controller: loginEmailController, textInputType: TextInputType.emailAddress
-                            , focusNode: focusNodeEmail, nextFocusNode: focusNodePassword, label: 'Email', icon: FontAwesomeIcons.envelope
-                            , formProperty: 'email', formValues: formValues),
-                        Container(
-                          width: 250.0,
-                          height: 1.0,
-                          color: Colors.grey[400],
-                        ),
-                        TextFormsModels.passwordForm(controller: loginPasswordController, textInputType: TextInputType.visiblePassword
-                            , focusNode: focusNodePassword, label: 'Contraseña', icon: FontAwesomeIcons.lock
-                            , obscureText: _obscureTextPassword, tap: _toggleLogin, formProperty: 'password', formValues: formValues),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 185.0),
-                decoration: CustomTheme.loginPageBtnContainerDecoration,
-                  child: MaterialButtonModel(
-                    highlightColor: Colors.transparent,
-                    splashColor: CustomTheme.loginGradientEnd,
-                    content: 'Iniciar Sesión',
-                    textColor: Colors.white,
-                    fontSize: 25.0,
-                    fontFamily: 'WorkSansBold',
-                    onPressed: () => _signinButtonOnPressed,
-                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
-                ),
-              ),
+              _cardForm(context),
+              _signInButton(context),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: TextButton(
-              onPressed: () {},
-              child: const Text(
-                'Olvidé mi contraseña',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: Colors.white,
-                  fontSize: 16.0,
-                  fontFamily: 'WorkSansMedium',
-                ),
+          TextButton(
+            onPressed: () {},
+            child: const Text(
+              'Olvidé mi contraseña',
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                color: Colors.white,
+                fontSize: 14.0,
+                fontFamily: 'WorkSansMedium',
               ),
             ),
           ),
@@ -141,5 +101,45 @@ class _SignInState extends State<SignIn> {
           message: 'Credenciales incorrectas');
       }
     }
+  }
+
+  Widget _cardForm(BuildContext context) {
+    return Card(
+      elevation: 2.0,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: SizedBox(
+        width: 300.0,
+        // height: double.maxFinite,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormsModels.textForm(controller: loginEmailController, textInputType: TextInputType.emailAddress
+                  , focusNode: focusNodeEmail, nextFocusNode: focusNodePassword, label: 'Email', icon: FontAwesomeIcons.envelope
+                  , formProperty: 'email', formValues: formValues),
+              Divider(height: 1, color: Colors.grey[400], thickness: 1,),
+              TextFormsModels.passwordForm(controller: loginPasswordController, textInputType: TextInputType.visiblePassword
+                  , focusNode: focusNodePassword, label: 'Contraseña', icon: FontAwesomeIcons.lock
+                  , obscureText: _obscureTextPassword, tap: _toggleLogin, formProperty: 'password', formValues: formValues),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _signInButton(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    return Container(
+      margin: EdgeInsetsDirectional.only(top: height * 0.28),
+      decoration: CustomTheme.loginPageBtnContainerDecoration,
+      child: MaterialButtonModel(highlightColor: Colors.transparent, splashColor: CustomTheme.loginGradientEnd,
+        content: 'Iniciar Sesión', textColor: Colors.white, fontSize: 25.0, fontFamily: 'WorkSansBold',
+        onPressed: () => _signinButtonOnPressed, padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+      ),
+    );
   }
 }

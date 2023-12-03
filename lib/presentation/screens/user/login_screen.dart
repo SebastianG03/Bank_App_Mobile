@@ -32,13 +32,17 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         scrollDirection: Axis.vertical,
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+          height: height,
+          width: width,
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.02),
           decoration: _decoration(),
           child: Column(

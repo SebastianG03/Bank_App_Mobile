@@ -21,11 +21,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Tu Banco Online',
-      // home: const LoginScreen(),
       routerConfig: appRouter,
       theme: CustomTheme.lightTheme,
-      //initialRoute: ,
-      //routes: ,
       );
   }
 }
