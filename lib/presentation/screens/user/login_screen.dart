@@ -59,24 +59,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               ),
               Expanded(
                 flex: 2,
-                child: PageView(
-                  controller: _pageController,
-                  physics: const ClampingScrollPhysics(),
-                  onPageChanged: (int i) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    setState(() {});
-                  },
-                  children: <Widget>[
-                    ConstrainedBox(
-                      constraints: const BoxConstraints.expand(),
-                      child: const SignIn(),
-                    ),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints.expand(),
-                      child: const SignUp(),
-                    )
-                  ],
-                ),
+                child: _viewLoginPages(context),
               )
             ],
           ),
@@ -99,6 +82,27 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           stops: <double>[0.0, 1.0],
           tileMode: TileMode.clamp
       ),
+    );
+  }
+
+  Widget _viewLoginPages(BuildContext context) {
+    return PageView(
+      controller: _pageController,
+      physics: const ClampingScrollPhysics(),
+      onPageChanged: (int i) {
+        FocusScope.of(context).requestFocus(FocusNode());
+        setState(() {});
+      },
+      children: <Widget>[
+        ConstrainedBox(
+          constraints: const BoxConstraints.expand(),
+          child: const SignIn(),
+        ),
+        ConstrainedBox(
+          constraints: const BoxConstraints.expand(),
+          child: const SignUp(),
+        )
+      ],
     );
   }
 

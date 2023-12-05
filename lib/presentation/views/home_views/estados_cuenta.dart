@@ -19,8 +19,8 @@ class EstadosCuenta extends StatelessWidget {
       height: 150,
       width: 400,
       child: Padding(
-        padding: const EdgeInsets.only(left: 10, top: 30, right: 10),
-        child: BAccountCardModel(bankAccount: bankAccount, user: user).buildCardModel(context),
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: BAccountCardModel(bankAccount: bankAccount, user: user),
       ),
     );
   }

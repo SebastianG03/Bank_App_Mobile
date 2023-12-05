@@ -15,6 +15,12 @@ class TextFormsModels extends StatelessWidget {
   final String formProperty;
   final Map<String, String> formValues;
 
+  /**
+   * TextFormsModels<br>
+   * <b><i>textForm</b></i>: <b>True</b> para crear un formulario de texto normal,
+   * <b>False</b> para crear un formulario de contraseñas.
+   * */
+
   TextFormsModels.textForm({super.key,required this.controller, required this.textInputType,
     required this.focusNode, this.nextFocusNode, required this.label, required this.icon, this.textForm = true,
     required this.formProperty, required this.formValues});

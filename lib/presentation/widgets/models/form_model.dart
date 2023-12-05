@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FormsModel extends ConsumerStatefulWidget {
+class FormsModel extends StatefulWidget {
 
   const FormsModel({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _FormsModelState();
-
+  State<FormsModel> createState() => _FormsModelState();
 }
 
-class _FormsModelState extends ConsumerState<FormsModel> {
+class _FormsModelState extends State<FormsModel> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

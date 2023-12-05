@@ -1,7 +1,6 @@
 import 'package:bank_app_mobile/config/theme/theme.dart';
 import 'package:bank_app_mobile/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/models.dart';
 import '../../views/views_user.dart';
@@ -31,13 +30,15 @@ class _HomeScreenState extends State<HomeScreen> {
       height: MediaQuery.of(context).size.height,
       child: Scaffold(
         // appBar: AppBar(backgroundColor: CustomTheme.appBar),
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: [
-            EstadosCuenta(idUser: widget.user.idUser!),
-            TransferenciasView(idUser: widget.user.idUser!),
-            CuentaUsuarioView(idUser: widget.user.idUser!),
-          ],
+        body: SafeArea(
+          child: IndexedStack(
+            index: _selectedIndex,
+            children: [
+              EstadosCuenta(idUser: widget.user.idUser!),
+              TransferenciasView(idUser: widget.user.idUser!),
+              CuentaUsuarioView(idUser: widget.user.idUser!),
+            ],
+          ),
         ),
         bottomNavigationBar: _bottomBar(context),
       ),

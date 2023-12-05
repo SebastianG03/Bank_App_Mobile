@@ -5,13 +5,14 @@ import 'package:go_router/go_router.dart';
 import '../../model/models.dart';
 import '../../screens/screens.dart';
 
-class BAccountCardModel {
+class BAccountCardModel extends StatelessWidget {
   BankAccount bankAccount;
   User user;
 
-  BAccountCardModel({required this.bankAccount, required this.user});
+  BAccountCardModel({super.key, required this.bankAccount, required this.user});
 
-  Widget buildCardModel(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,

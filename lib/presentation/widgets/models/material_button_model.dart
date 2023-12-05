@@ -13,7 +13,10 @@ class MaterialButtonModel extends StatelessWidget {
   final Function onPressed;
   final EdgeInsetsGeometry padding;
 
-
+  /** [MaterialButtonModel]
+   * cuando el model es 1, el boton debe colocarse dentro de un container para ser visible.
+   * Cuando el model es 2, utiliza un formato común de MaterialButton
+   * */
   MaterialButtonModel({super.key , this.model = 1, this.highlightColor, this.splashColor, this.buttonColor, required this.content,
       required this.textColor, required this.fontSize, this.fontFamily, required this.onPressed, required this.padding});
 

@@ -51,17 +51,13 @@ class _TransferenciasViewState extends State<TransferenciasView> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return SizedBox(
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 0.5,
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      height: height * 0.5,
+      width: width,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(50),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Form(
           key: _formKey,
           child: Column(

@@ -1,8 +1,10 @@
 
 import 'package:bank_app_mobile/config/theme/theme.dart';
+import 'package:bank_app_mobile/presentation/blocs/register_forms/register_cubit.dart';
 import 'package:bank_app_mobile/presentation/model/models.dart';
 import 'package:bank_app_mobile/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../widgets/widgets.dart';
 
@@ -33,7 +35,7 @@ class _SignUpState extends State<SignUp>{
   TextEditingController signupCedulaController = TextEditingController();
   TextEditingController signupRoleController = TextEditingController();
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, String> formValues = {
     'name': '',
     'email': '',
@@ -61,6 +63,8 @@ class _SignUpState extends State<SignUp>{
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    final registerCubit = context.watch<RegisterCubit>();
+
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 30.0),
       physics: const ClampingScrollPhysics(),
@@ -71,26 +75,9 @@ class _SignUpState extends State<SignUp>{
             padding: const EdgeInsets.only(top: 23.0),
             physics: const ClampingScrollPhysics(),
             scrollDirection: Axis.vertical,
-            child: Form(
-              key: _formKey,
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: <Widget>[
-                  Card(
-                    elevation: 2.0,
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: _registerForm(context),
-                  ),
-                  Container(
-                    margin: EdgeInsetsDirectional.only(top: height * 0.8),
-                    decoration: CustomTheme.loginPageBtnContainerDecoration,
-                    child: _registerButton(context),
-                  ),
-                ],
-              ),
+            child: BlocProvider(
+              create: (context) => RegisterCubit(),
+              child: _formContent(context, width, height),
             ),
           ),
           const SizedBox(height: 50,),
@@ -119,7 +106,32 @@ class _SignUpState extends State<SignUp>{
     });
   }
 
+  Widget _formContent(BuildContext context, double width, double height) {
+    return Form(
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          Card(
+            elevation: 2.0,
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: _registerForm(context),
+          ),
+          Container(
+            margin: EdgeInsetsDirectional.only(top: height * 0.8),
+            decoration: CustomTheme.loginPageBtnContainerDecoration,
+            child: _registerButton(context),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _registerForm(BuildContext context) {
+    final registerCubit = context.watch<RegisterCubit>();
+
     return SizedBox(
       width: 300.0,
       height: 600.0,
@@ -157,6 +169,7 @@ class _SignUpState extends State<SignUp>{
 
   void _signupButtonOnPressed() {
     FocusScope.of(context).requestFocus(FocusNode());
+    // registerCubit.submit();
 
     if(formValues.isEmpty || formValues['name']!.isEmpty || formValues['email']!.isEmpty
         || formValues['password']!.isEmpty ||  formValues['confirmPassword']!.isEmpty || formValues['phone']!.isEmpty

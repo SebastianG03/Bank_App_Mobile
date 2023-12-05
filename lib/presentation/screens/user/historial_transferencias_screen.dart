@@ -1,3 +1,5 @@
+import 'package:bank_app_mobile/config/theme/theme.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,13 +22,19 @@ class HistorialTransferencias extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isEmpty ? _listaVacia(context) : _listaTransferencias(context);
+    return SafeArea(
+        child: isEmpty ? _listaVacia(context) : _listaTransferencias(context),
+    );
   }
 
   Widget _listaTransferencias(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: CustomTheme.appBar,),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(25.0),
+          scrollDirection: Axis.vertical,
+          physics: const ClampingScrollPhysics(),
+          dragStartBehavior: DragStartBehavior.start,
           child: Column(
             children: <Widget>[
               ListView.separated(
@@ -45,7 +53,6 @@ class HistorialTransferencias extends StatelessWidget {
                 separatorBuilder: (_, __) => const Divider(),
               ),
               const SizedBox(height: 40,),
-              textButton(context),
             ],
           ),
         )
@@ -57,23 +64,14 @@ class HistorialTransferencias extends StatelessWidget {
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text('No hay transferencias'),
-              textButton(context),
+              Text('No hay transferencias'),
             ],
           ),
         )
-    );
-  }
-
-
-  Widget textButton(BuildContext context) {
-    return TextButton(
-      onPressed: () => context.pop(),
-      child: const Text('Volver'),
     );
   }
 }
