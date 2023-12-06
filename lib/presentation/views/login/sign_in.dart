@@ -1,11 +1,14 @@
 import 'package:bank_app_mobile/config/theme/theme.dart';
+import 'package:bank_app_mobile/presentation/blocs/register_forms/register_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:go_router/go_router.dart';
 import '../../model/models.dart';
 import '../../screens/screens.dart';
 import '../../utils/util.dart';
+import '../../widgets/inputs/inputs.dart';
 import '../../widgets/widgets.dart';
 
 
@@ -17,31 +20,21 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  TextEditingController loginEmailController = TextEditingController();
-  TextEditingController loginPasswordController = TextEditingController();
-
-  final FocusNode focusNodeEmail = FocusNode();
-  final FocusNode focusNodePassword = FocusNode();
 
   bool _obscureTextPassword = true;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, String> formValues = {
     'email': '',
     'password': '',
   };
   Util util = Util();
 
-  @override
-  void dispose() {
-    focusNodeEmail.dispose();
-    focusNodePassword.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    final registerCubit = context.watch<RegisterCubit>();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 23.0),
@@ -50,12 +43,15 @@ class _SignInState extends State<SignIn> {
       child: Column(
         verticalDirection: VerticalDirection.down,
         children: <Widget>[
-          Stack(
-            alignment: Alignment.topCenter,
-            children: <Widget>[
-              _cardForm(context),
-              _signInButton(context),
-            ],
+          BlocProvider(
+            create: (context) => RegisterCubit(),
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: <Widget>[
+                _cardForm(context, registerCubit),
+                _signInButton(context),
+              ],
+            ),
           ),
           TextButton(
             onPressed: () {},
@@ -74,36 +70,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  void _toggleLogin() {
-    setState(() {
-      _obscureTextPassword = !_obscureTextPassword;
-    });
-  }
-
-  void _signinButtonOnPressed() {
-    if(formValues.isEmpty || formValues['email']!.isEmpty || formValues['password']!.isEmpty) {
-      Alerts.androidAlertDialog(context: context, title: 'No se pudo iniciar sesión',
-        message: 'Por favor llene todos los campos');
-    } else {
-      User user = util.users.firstWhere((element) => element.email == formValues['email']! && element.password == formValues['password']!);
-      BankAccount bankAccount = util.bankAccounts.firstWhere((element) => element.idUser == user.idUser);
-      if(bankAccount != null) {
-
-        print('email: ${formValues['email']}');
-        print('password: ${formValues['password']}');
-
-        print('user email: ${user.email}');
-        print('user password: ${user.password}');
-        context.goNamed(HomeScreen.name, pathParameters: {'idUser': user.idUser.toString()});
-
-      } else {
-        Alerts.androidAlertDialog(context: context, title: 'No se pudo iniciar sesión',
-          message: 'Credenciales incorrectas');
-      }
-    }
-  }
-
-  Widget _cardForm(BuildContext context) {
+  Widget _cardForm(BuildContext context, RegisterCubit registerCubit) {
     return Card(
       elevation: 2.0,
       color: Colors.white,
@@ -112,21 +79,32 @@ class _SignInState extends State<SignIn> {
       ),
       child: SizedBox(
         width: 300.0,
-        // height: double.maxFinite,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormsModels.textForm(controller: loginEmailController, textInputType: TextInputType.emailAddress
-                  , focusNode: focusNodeEmail, nextFocusNode: focusNodePassword, label: 'Email', icon: FontAwesomeIcons.envelope
-                  , formProperty: 'email', formValues: formValues),
-              Divider(height: 1, color: Colors.grey[400], thickness: 1,),
-              TextFormsModels.passwordForm(controller: loginPasswordController, textInputType: TextInputType.visiblePassword
-                  , focusNode: focusNodePassword, label: 'Contraseña', icon: FontAwesomeIcons.lock
-                  , obscureText: _obscureTextPassword, tap: _toggleLogin, formProperty: 'password', formValues: formValues),
-            ],
-          ),
-        ),
+        child: _buildForm(context, registerCubit),
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context, RegisterCubit registerCubit) {
+    final email = registerCubit.state.email;
+    final password = registerCubit.state.password;
+
+
+    return Form(
+      child: Column(
+        children: <Widget>[
+          TextFormsModel(textInputType: TextInputType.emailAddress,
+            decoration: const InputDecoration(labelText: 'Email', icon: Icon(FontAwesomeIcons.envelope), errorText: ''),
+            onChanged: (String value) => {
+              formValues['email'] = value,
+              registerCubit.emailChanged(value),
+            },),
+          Divider(height: 1, color: Colors.grey[400], thickness: 1,),
+          PasswordFormsModel(textInputType: TextInputType.text, label: 'Contraseña', obscureText: _obscureTextPassword,
+            onChanged: (String value) => {
+            formValues['password'] = value,
+              registerCubit.passwordChanged(value),
+            }, errorMessage: '', tap: _toggleLogin,),
+        ],
       ),
     );
   }
@@ -142,4 +120,36 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
+
+
+  void _toggleLogin() {
+    setState(() {
+      _obscureTextPassword = !_obscureTextPassword;
+    });
+  }
+
+  void _signinButtonOnPressed() {
+
+    if(formValues.isEmpty || formValues['email']!.isEmpty || formValues['password']!.isEmpty) {
+      Alerts.androidAlertDialog(context: context, title: 'No se pudo iniciar sesión',
+          message: 'Por favor llene todos los campos');
+    } else {
+      User user = util.users.firstWhere((element) => element.email == formValues['email']! && element.password == formValues['password']!);
+      BankAccount bankAccount = util.bankAccounts.firstWhere((element) => element.idUser == user.idUser);
+      if(bankAccount != null) {
+
+        print('email: ${formValues['email']}');
+        print('password: ${formValues['password']}');
+
+        print('user email: ${user.email}');
+        print('user password: ${user.password}');
+        context.goNamed(HomeScreen.name, pathParameters: {'idUser': user.idUser.toString()});
+
+      } else {
+        Alerts.androidAlertDialog(context: context, title: 'No se pudo iniciar sesión',
+            message: 'Credenciales incorrectas');
+      }
+    }
+  }
+
 }

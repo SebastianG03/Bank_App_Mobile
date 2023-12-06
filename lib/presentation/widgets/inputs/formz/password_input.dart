@@ -7,7 +7,14 @@ class PasswordInput extends FormzInput<String, PasswordError> {
   const PasswordInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const PasswordInput.dirty({String value = ''}) : super.dirty(value);
+  const PasswordInput.dirty(String value) : super.dirty(value);
+
+  String? get errorMessage {
+    if(isValid || isPure) return null;
+    if(displayError == PasswordError.empty) return 'El campo es requerido';
+    if(displayError == PasswordError.length) return 'La contraseña debe tener entre 8 y 20 caracteres';
+    return null;
+  }
 
   // Override validator to handle validating a given input value.
   @override

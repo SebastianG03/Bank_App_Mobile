@@ -8,7 +8,15 @@ class NameInput extends FormzInput<String, NameError> {
   const NameInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const NameInput.dirty({String value = ''}) : super.dirty(value);
+  const NameInput.dirty(String value) : super.dirty(value);
+
+  String? get errorMessage {
+    if(isValid || isPure) return null;
+    if(displayError == NameError.empty) return 'El campo es requerido';
+    if(displayError == NameError.invalid) return 'El nombre solo puede contener letras';
+    if(displayError == NameError.length) return 'El nombre debe tener entre 6 y 30 caracteres';
+    return null;
+  }
 
   // Override validator to handle validating a given input value.
   @override

@@ -7,9 +7,9 @@ class RegisterFormState extends Equatable{
   final FormStatus formStatus;
   final bool isValid;
   final NameInput name;
-  final String email;
+  final EmailInput email;
   final PasswordInput password;
-  final String cedula;
+  final DniInput dni;
   final String phone;
 
 
@@ -17,9 +17,9 @@ class RegisterFormState extends Equatable{
     this.formStatus = FormStatus.invalid,
     this.name = const NameInput.pure(),
     this.isValid = false,
-    this.email = "",
+    this.email = const EmailInput.pure(),
     this.password = const PasswordInput.pure(),
-    this.cedula = "",
+    this.dni = const DniInput.pure(),
     this.phone = ""
   });
 
@@ -27,9 +27,9 @@ class RegisterFormState extends Equatable{
     FormStatus? formStatus,
     NameInput? name,
     bool? isValid,
-    String? email,
+    EmailInput? email,
     PasswordInput? password,
-    String? cedula,
+    DniInput? cedula,
     String? phone
   }) => RegisterFormState(
     formStatus: formStatus ?? this.formStatus,
@@ -37,11 +37,11 @@ class RegisterFormState extends Equatable{
     name: name ?? this.name,
     email: email ?? this.email,
     password: password ?? this.password,
-    cedula: cedula ?? this.cedula,
+    dni: cedula ?? this.dni,
     phone: phone ?? this.phone
   );
 
   @override
-  List<Object> get props => [formStatus, isValid, name, email, password, cedula, phone];
+  List<Object> get props => [formStatus, isValid, name, email, password, dni, phone];
 
 }

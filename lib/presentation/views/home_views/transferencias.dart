@@ -62,7 +62,7 @@ class _TransferenciasViewState extends State<TransferenciasView> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              TextFormsModels.textForm(controller: cuentaReceptoraController,
+              TextFormsModel.textForm(controller: cuentaReceptoraController,
                   textInputType: TextInputType.number,
                   focusNode: focusCuentaReceptora
                   ,
@@ -71,7 +71,7 @@ class _TransferenciasViewState extends State<TransferenciasView> {
                   formProperty: 'cuentaReceptora',
                   formValues: formValues),
               const SizedBox(height: 10,),
-              TextFormsModels.textForm(controller: montoController,
+              TextFormsModel.textForm(controller: montoController,
                   textInputType: TextInputType.number,
                   focusNode: focusMonto
                   ,

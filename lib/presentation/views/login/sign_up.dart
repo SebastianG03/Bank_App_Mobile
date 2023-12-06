@@ -6,6 +6,7 @@ import 'package:bank_app_mobile/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../widgets/inputs/inputs.dart';
 import '../../widgets/widgets.dart';
 
 class SignUp extends StatefulWidget {
@@ -16,31 +17,15 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp>{
-  final FocusNode focusNodePassword = FocusNode();
-  final FocusNode focusNodeConfirmPassword = FocusNode();
-  final FocusNode focusNodeEmail = FocusNode();
-  final FocusNode focusNodeName = FocusNode();
-  final FocusNode focusNodePhone = FocusNode();
-  final FocusNode focusNodeCedula = FocusNode();
-  final FocusNode focusNodeRole = FocusNode();
 
   bool _obscureTextPassword = true;
   bool _obscureTextConfirmPassword = true;
-
-  TextEditingController signupEmailController = TextEditingController();
-  TextEditingController signupNameController = TextEditingController();
-  TextEditingController signupPasswordController = TextEditingController();
-  TextEditingController signupConfirmPasswordController = TextEditingController();
-  TextEditingController signupPhoneController = TextEditingController();
-  TextEditingController signupCedulaController = TextEditingController();
-  TextEditingController signupRoleController = TextEditingController();
 
   // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, String> formValues = {
     'name': '',
     'email': '',
     'password': '',
-    'confirmPassword': '',
     'phone': '',
     'cedula': '',
     'role': 'client',
@@ -48,23 +33,10 @@ class _SignUpState extends State<SignUp>{
   Util util = Util();
 
   @override
-  void dispose() {
-    focusNodePassword.dispose();
-    focusNodeConfirmPassword.dispose();
-    focusNodeEmail.dispose();
-    focusNodeName.dispose();
-    focusNodePhone.dispose();
-    focusNodeCedula.dispose();
-    focusNodeRole.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     final registerCubit = context.watch<RegisterCubit>();
-
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 30.0),
       physics: const ClampingScrollPhysics(),
@@ -77,7 +49,7 @@ class _SignUpState extends State<SignUp>{
             scrollDirection: Axis.vertical,
             child: BlocProvider(
               create: (context) => RegisterCubit(),
-              child: _formContent(context, width, height),
+              child: _formContent(context, width, height, registerCubit),
             ),
           ),
           const SizedBox(height: 50,),
@@ -106,7 +78,7 @@ class _SignUpState extends State<SignUp>{
     });
   }
 
-  Widget _formContent(BuildContext context, double width, double height) {
+  Widget _formContent(BuildContext context, double width, double height, RegisterCubit registerCubit) {
     return Form(
       child: Stack(
         alignment: Alignment.topCenter,
@@ -117,7 +89,7 @@ class _SignUpState extends State<SignUp>{
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            child: _registerForm(context),
+            child: _registerForm(context, registerCubit),
           ),
           Container(
             margin: EdgeInsetsDirectional.only(top: height * 0.8),
@@ -129,33 +101,52 @@ class _SignUpState extends State<SignUp>{
     );
   }
 
-  Widget _registerForm(BuildContext context) {
-    final registerCubit = context.watch<RegisterCubit>();
+  Widget _registerForm(BuildContext context, RegisterCubit registerCubit) {
+    final email = registerCubit.state.email;
+    final name = registerCubit.state.name;
+    final phone = registerCubit.state.phone;
+    final dni = registerCubit.state.dni;
+    final password = registerCubit.state.password;
 
     return SizedBox(
       width: 300.0,
       height: 600.0,
         child: Column(
           children: <Widget>[
-            TextFormsModels.textForm(controller: signupNameController, textInputType: TextInputType.text, focusNode: focusNodeName
-                , nextFocusNode: focusNodeEmail, label: 'Nombre', icon: FontAwesomeIcons.person, formProperty: 'name', formValues: formValues),
+            TextFormsModel(textInputType: TextInputType.text,
+                decoration: InputDecoration(labelText: 'Nombre', icon: const Icon(FontAwesomeIcons.person), errorText: name.errorMessage),
+                onChanged: (String value) {
+                  formValues['name'] = value;
+                  registerCubit.nameChanged(value);
+                },),
             space(context),
-            TextFormsModels.textForm(controller: signupEmailController, textInputType: TextInputType.emailAddress, focusNode: focusNodeEmail
-                , nextFocusNode: focusNodePhone, label: 'Correo electrónico', icon: FontAwesomeIcons.envelope, formProperty: 'email', formValues: formValues),
+            TextFormsModel(textInputType: TextInputType.emailAddress,
+              decoration: InputDecoration(labelText: 'Email', icon: const Icon(FontAwesomeIcons.envelope), errorText: email.errorMessage),
+              onChanged: (String value) {
+                  formValues['email'] = value;
+                  registerCubit.emailChanged(value);
+                },),
             space(context),
-            TextFormsModels.textForm(controller: signupPhoneController, textInputType: TextInputType.phone, focusNode: focusNodePhone
-               , nextFocusNode: focusNodeCedula, label: 'Teléfono', icon: FontAwesomeIcons.phone, formProperty: 'phone', formValues: formValues),
+            TextFormsModel(textInputType: TextInputType.phone,
+                decoration: const InputDecoration(labelText: 'Teléfono', icon: Icon(FontAwesomeIcons.phone)),
+                onChanged: (String value) {
+                  formValues['phone'] = value;
+                  registerCubit.phoneChanged(value);
+                },),
             space(context),
-            TextFormsModels.textForm(controller: signupCedulaController, textInputType: TextInputType.number, focusNode: focusNodeCedula
-                , nextFocusNode: focusNodePassword, label: 'Cédula', icon: FontAwesomeIcons.idCard, formProperty: 'dni', formValues: formValues),
+            TextFormsModel(textInputType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Cédula', icon: Icon(FontAwesomeIcons.idCard)),
+                onChanged: (String value) {
+                  formValues['dni'] = value;
+                  registerCubit.cedulaChanged(value);
+                },),
             space(context),
-            TextFormsModels.passwordForm(controller: signupPasswordController, textInputType: TextInputType.visiblePassword, focusNode: focusNodePassword,
-                 nextFocusNode: focusNodeConfirmPassword, label: 'Contraseña', icon: FontAwesomeIcons.lock, obscureText: _obscureTextPassword, tap: _toggleSignup, formProperty: 'password',
-                formValues: formValues),
+            PasswordFormsModel(textInputType: TextInputType.visiblePassword, label: 'Contraseña',
+                onChanged: (String value) {
+                  registerCubit.passwordChanged(value);
+                  formValues['password'] = value;
+                }, errorMessage: password.errorMessage, tap: _toggleSignup, obscureText: _obscureTextPassword),
             space(context),
-            TextFormsModels.passwordForm(controller: signupConfirmPasswordController, textInputType: TextInputType.visiblePassword
-                , focusNode: focusNodeConfirmPassword, label: "Confirmar contraseña", icon: FontAwesomeIcons.lock
-                , obscureText: _obscureTextConfirmPassword, tap: _toggleSignUpConfirm, formProperty: 'confirmPassword', formValues: formValues),
           ],
         ),
     );
@@ -172,13 +163,10 @@ class _SignUpState extends State<SignUp>{
     // registerCubit.submit();
 
     if(formValues.isEmpty || formValues['name']!.isEmpty || formValues['email']!.isEmpty
-        || formValues['password']!.isEmpty ||  formValues['confirmPassword']!.isEmpty || formValues['phone']!.isEmpty
+        || formValues['password']!.isEmpty || formValues['phone']!.isEmpty
         || formValues['dni']!.isEmpty ) {
       Alerts.androidAlertDialog(context: context, title: 'No se pudo registrar el usuario',
           message: 'Por favor llene todos los campos');
-    } else if(formValues['password'] != formValues['confirmPassword']) {
-      Alerts.androidAlertDialog(context: context, title: 'No se pudo registrar el usuario',
-          message: 'Las contraseñas no coinciden');
     } else {
 
       User user = User(idUser: util.users.length, name: formValues['name']!, email: formValues['email']!,
