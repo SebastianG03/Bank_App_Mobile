@@ -1,9 +1,10 @@
 import 'package:bank_app_mobile/config/theme/theme.dart';
+import 'package:bank_app_mobile/infrastructure/model/models.dart' show BankAccount, Transferencia;
+import 'package:bank_app_mobile/infrastructure/utils/util.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../model/models.dart';
-import '../../utils/util.dart';
+
 import '../../widgets/widgets.dart';
 
 class HistorialTransferencias extends StatelessWidget {

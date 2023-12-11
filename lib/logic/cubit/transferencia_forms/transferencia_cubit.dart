@@ -1,4 +1,4 @@
-import 'package:bank_app_mobile/presentation/widgets/inputs/inputs.dart';
+import 'package:bank_app_mobile/infrastructure/formz/formz.dart' show AccountInput, AmountInput;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';

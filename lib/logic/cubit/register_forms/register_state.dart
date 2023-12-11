@@ -37,7 +37,7 @@ class RegisterFormState extends Equatable{
     name: name ?? this.name,
     email: email ?? this.email,
     password: password ?? this.password,
-    dni: cedula ?? this.dni,
+    dni: cedula ?? dni,
     phone: phone ?? this.phone
   );
 

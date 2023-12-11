@@ -57,14 +57,14 @@ class _TransferenciasViewState extends State<TransferenciasView> {
       child: Column(
         children: <Widget>[
           TextFormsModel(textInputType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Número de cuenta', icon: Icon(FontAwesomeIcons.idCard), errorText: 'error'),
+            decoration: const InputDecoration(labelText: 'Número de cuenta', icon: Icon(FontAwesomeIcons.idCard), errorText: 'error'),
             onChanged: (String value) {
               formValues['cuentaReceptora'] = value;
               transferenciaCubit.accountNumberChanged(value);
             },),
           const SizedBox(height: 10,),
           TextFormsModel(textInputType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Monto', icon: Icon(FontAwesomeIcons.dollarSign), errorText: 'error')
+            decoration: const InputDecoration(labelText: 'Monto', icon: Icon(FontAwesomeIcons.dollarSign), errorText: 'error')
             , onChanged: (String value) {
               formValues['monto'] = value;
               transferenciaCubit.amountChanged(value);
@@ -109,22 +109,17 @@ class _TransferenciasViewState extends State<TransferenciasView> {
             element) => element.accountNumber == cuentaReceptora);
         User accountReceiver = util.users.firstWhere((element) =>
         element.idUser == bankAccountReceiver.idUser);
-        if (accountReceiver != null) {
-          widget.bankAccount.accountAmount -= monto;
-          bankAccountReceiver.accountAmount += monto;
-          util.bankAccounts.remove(bankAccountReceiver);
-          util.bankAccounts.remove(widget.bankAccount);
-          util.bankAccounts.add(bankAccountReceiver);
-          util.bankAccounts.add(widget.bankAccount);
-          Alerts.androidAlertDialog(
-              context: context, title: 'Transferencia realizada',
-              message: 'A realizado exitósamente su transferencia al usuario ${accountReceiver
-                  .name}');
-        } else {
-          Alerts.androidAlertDialog(context: context, title: 'Error',
-              message: 'La transferencia no pudo ser realizada, verifique los datos');
-        }
-      } catch (e) {
+        widget.bankAccount.accountAmount -= monto;
+        bankAccountReceiver.accountAmount += monto;
+        util.bankAccounts.remove(bankAccountReceiver);
+        util.bankAccounts.remove(widget.bankAccount);
+        util.bankAccounts.add(bankAccountReceiver);
+        util.bankAccounts.add(widget.bankAccount);
+        Alerts.androidAlertDialog(
+            context: context, title: 'Transferencia realizada',
+            message: 'A realizado exitósamente su transferencia al usuario ${accountReceiver
+                .name}');
+            } catch (e) {
         Alerts.androidAlertDialog(
             context: context, title: 'No se pudo realizar la transferencia',
             message: 'Por favor, coloque datos correctos');

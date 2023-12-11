@@ -11,7 +11,7 @@ class AccountInput extends FormzInput<String, AccountError> {
   const AccountInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const AccountInput.dirty(String value) : super.dirty(value);
+  const AccountInput.dirty(super.value) : super.dirty();
 
 
   String? get errorMessage {

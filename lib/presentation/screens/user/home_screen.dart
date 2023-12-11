@@ -1,8 +1,8 @@
 import 'package:bank_app_mobile/config/theme/theme.dart';
-import 'package:bank_app_mobile/presentation/utils/utils.dart';
+import 'package:bank_app_mobile/infrastructure/model/models.dart' show BankAccount, User;
+import 'package:bank_app_mobile/infrastructure/utils/utils.dart' show Util, AppBarItems;
 import 'package:flutter/material.dart';
 
-import '../../model/models.dart';
 import '../../views/views_user.dart';
 
 

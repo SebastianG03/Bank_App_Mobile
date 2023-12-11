@@ -11,7 +11,7 @@ class DniInput extends FormzInput<String, DniError> {
   const DniInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const DniInput.dirty(String value) : super.dirty(value);
+  const DniInput.dirty(super.value) : super.dirty();
 
 
   String? get errorMessage {

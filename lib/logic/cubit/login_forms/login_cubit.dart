@@ -1,5 +1,5 @@
 
-import 'package:bank_app_mobile/presentation/widgets/inputs/inputs.dart';
+import 'package:bank_app_mobile/infrastructure/formz/formz.dart' show EmailInput, PasswordInput;
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -20,6 +20,7 @@ class LoginCubit extends Cubit<LoginFormState> {
           isValid: Formz.validate([state.email, state.password]),
         )
     );
+
   }
 
   void emailChanged(String value) {

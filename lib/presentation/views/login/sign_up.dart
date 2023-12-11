@@ -35,7 +35,6 @@ class _SignUpState extends State<SignUp>{
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final registerCubit = context.watch<RegisterCubit>();
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 30.0),
       physics: const ClampingScrollPhysics(),
@@ -48,7 +47,7 @@ class _SignUpState extends State<SignUp>{
             scrollDirection: Axis.vertical,
             child: BlocProvider(
               create: (context) => RegisterCubit(),
-              child: _formContent(context, width, height, registerCubit),
+              child: _formContent(context, width, height),
             ),
           ),
           const SizedBox(height: 50,),
@@ -71,7 +70,7 @@ class _SignUpState extends State<SignUp>{
     });
   }
 
-  Widget _formContent(BuildContext context, double width, double height, RegisterCubit registerCubit) {
+  Widget _formContent(BuildContext context, double width, double height) {
     return Form(
       child: Stack(
         alignment: Alignment.topCenter,
@@ -82,24 +81,29 @@ class _SignUpState extends State<SignUp>{
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            child: _registerForm(context, registerCubit),
+            child: BlocBuilder<RegisterCubit, RegisterFormState>(
+              builder: (context, state) => _registerForm(context, state),
+            ),
           ),
           Container(
             margin: EdgeInsetsDirectional.only(top: height * 0.8),
             decoration: CustomTheme.loginPageBtnContainerDecoration,
-            child: _registerButton(context, registerCubit),
+            child: BlocBuilder<RegisterCubit, RegisterFormState>(
+              builder: (context, state) => _registerButton(context),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _registerForm(BuildContext context, RegisterCubit registerCubit) {
-    final email = registerCubit.state.email;
-    final name = registerCubit.state.name;
-    final phone = registerCubit.state.phone;
-    final dni = registerCubit.state.dni;
-    final password = registerCubit.state.password;
+  Widget _registerForm(BuildContext context, RegisterFormState state) {
+    RegisterCubit registerCubit = context.read<RegisterCubit>();
+    final email = state.email;
+    final name = state.name;
+    final phone = state.phone;
+    final dni = state.dni;
+    final password = state.password;
 
     return SizedBox(
       width: 300.0,
@@ -107,11 +111,15 @@ class _SignUpState extends State<SignUp>{
         child: Column(
           children: <Widget>[
             TextFormsModel(textInputType: TextInputType.text,
-                decoration: InputDecoration(labelText: 'Nombre', icon: const Icon(FontAwesomeIcons.person), errorText: name.errorMessage),
+                decoration: const InputDecoration(labelText: 'Nombre', icon: Icon(FontAwesomeIcons.person)),
                 onChanged: (String value) {
                   formValues['name'] = value;
                   registerCubit.nameChanged(value);
-                },),
+                },
+              validator: (String? value) {
+                return state.name.errorMessage;
+              },
+            ),
             space(context),
             TextFormsModel(textInputType: TextInputType.emailAddress,
               decoration: InputDecoration(labelText: 'Email', icon: const Icon(FontAwesomeIcons.envelope), errorText: email.errorMessage),
@@ -145,17 +153,19 @@ class _SignUpState extends State<SignUp>{
     );
   }
 
-  Widget _registerButton(BuildContext context, RegisterCubit registerCubit) {
+  Widget _registerButton(BuildContext context) {
     return MaterialButtonModel(highlightColor: Colors.transparent, splashColor: CustomTheme.loginGradientEnd
-        , content: 'Crear Cuenta', onPressed: () => _signupButtonOnPressed(registerCubit), padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+        , content: 'Crear Cuenta', onPressed: () => _signupButtonOnPressed(context), padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
         textColor: Colors.white, fontSize: 25.0, fontFamily: 'WorkSansBold');
   }
 
-  void _signupButtonOnPressed(RegisterCubit registerCubit) {
+  void _signupButtonOnPressed(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
+    RegisterCubit registerCubit = context.read<RegisterCubit>();
     registerCubit.onSubmit();
     bool isValid = registerCubit.state.isValid;
     print(isValid);
+
     if(isValid) {
       User user = User(idUser: util.users.length, name: formValues['name']!, email: formValues['email']!,
           password: formValues['password']!, phone: formValues['phone']!, role: formValues['role']!, dni: formValues['dni']!);

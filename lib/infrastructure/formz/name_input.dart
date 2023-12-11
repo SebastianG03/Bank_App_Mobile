@@ -8,7 +8,7 @@ class NameInput extends FormzInput<String, NameError> {
   const NameInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const NameInput.dirty(String value) : super.dirty(value);
+  const NameInput.dirty(super.value) : super.dirty();
 
   String? get errorMessage {
     if(isValid || isPure) return null;

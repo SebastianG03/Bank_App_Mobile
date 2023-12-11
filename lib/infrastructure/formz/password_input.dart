@@ -7,7 +7,7 @@ class PasswordInput extends FormzInput<String, PasswordError> {
   const PasswordInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const PasswordInput.dirty(String value) : super.dirty(value);
+  const PasswordInput.dirty(super.value) : super.dirty();
 
   String? get errorMessage {
     if(isValid || isPure) return null;

@@ -6,7 +6,7 @@ class AmountInput extends FormzInput<String, AmountError> {
   static final RegExp numberRegExp = RegExp(r'^[0-9]+(\.[0-9]{0,2})?$');
 
   const AmountInput.pure() : super.pure('');
-  const AmountInput.dirty(String value) : super.dirty(value);
+  const AmountInput.dirty(super.value) : super.dirty();
 
   String? get errorMessage {
     if (isValid || isPure) return null;

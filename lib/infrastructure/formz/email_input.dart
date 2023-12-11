@@ -11,7 +11,7 @@ class EmailInput extends FormzInput<String, EmailError> {
   const EmailInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const EmailInput.dirty(String value) : super.dirty(value);
+  const EmailInput.dirty(super.value) : super.dirty();
 
 
   String? get errorMessage {

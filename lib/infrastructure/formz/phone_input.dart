@@ -11,7 +11,7 @@ class PhoneInput extends FormzInput<String, PhoneError> {
   const PhoneInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const PhoneInput.dirty(String value) : super.dirty(value);
+  const PhoneInput.dirty(super.value) : super.dirty();
 
 
   String? get errorMessage {
