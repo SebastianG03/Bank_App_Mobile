@@ -1,7 +1,7 @@
+import 'package:bank_app_mobile/infrastructure/model/models.dart';
 import 'package:flutter/material.dart';
 
 import '../../../config/theme/theme.dart';
-import '../../model/models.dart';
 
 class DetallesTransferencia {
 

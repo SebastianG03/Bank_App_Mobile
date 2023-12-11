@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../model/models.dart';
-import '../../utils/utils.dart';
+import 'package:bank_app_mobile/infrastructure/model/models.dart' show BankAccount, User;
+import 'package:bank_app_mobile/infrastructure/utils/utils.dart' show Util;
 import '../../widgets/widgets.dart' show BAccountCardModel;
 
 class EstadosCuenta extends StatelessWidget {

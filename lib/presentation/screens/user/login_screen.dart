@@ -1,6 +1,9 @@
 
 import 'package:bank_app_mobile/config/theme/theme.dart';
+import 'package:bank_app_mobile/presentation/blocs/login_forms/login_cubit.dart';
+import 'package:bank_app_mobile/presentation/blocs/register_forms/register_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 import '../../views/views_user.dart';
@@ -96,11 +99,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       children: <Widget>[
         ConstrainedBox(
           constraints: const BoxConstraints.expand(),
-          child: const SignIn(),
+          child: BlocBuilder<LoginCubit, LoginFormState>(
+            builder: (context, state) => const SignIn(),
+          ),
         ),
         ConstrainedBox(
           constraints: const BoxConstraints.expand(),
-          child: const SignUp(),
+          child: BlocBuilder<RegisterCubit, RegisterFormState>(
+            builder: (context, state) => const SignUp(),
+          ),
         )
       ],
     );

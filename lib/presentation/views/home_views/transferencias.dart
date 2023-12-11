@@ -1,9 +1,12 @@
+import 'package:bank_app_mobile/logic/cubit/transferencia_forms/transferencia_cubit.dart';
+import 'package:bank_app_mobile/presentation/widgets/inputs/inputs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../config/theme/theme.dart';
-import '../../model/models.dart';
-import '../../utils/utils.dart';
+import 'package:bank_app_mobile/infrastructure/model/models.dart';
+import 'package:bank_app_mobile/infrastructure/utils/utils.dart' show Util;
 import '../../widgets/widgets.dart';
 
 
@@ -27,80 +30,66 @@ class _TransferenciasViewState extends State<TransferenciasView> {
   Map<String, String> formValues = {};
   final Util util = Util();
 
-  final FocusNode focusCuentaReceptora = FocusNode();
-  final FocusNode focusMonto = FocusNode();
-
-  TextEditingController cuentaReceptoraController = TextEditingController();
-  TextEditingController montoController = TextEditingController();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    formValues = {'idEmisor': widget.bankAccount.idAccount.toString()};
-    
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    focusCuentaReceptora.dispose();
-    focusMonto.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final transferenciaCubit = context.watch<TransferenciaCubit>();
     return SizedBox(
       height: height * 0.5,
       width: width,
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormsModel.textForm(controller: cuentaReceptoraController,
-                  textInputType: TextInputType.number,
-                  focusNode: focusCuentaReceptora
-                  ,
-                  label: 'Número de cuenta',
-                  icon: FontAwesomeIcons.idCard,
-                  formProperty: 'cuentaReceptora',
-                  formValues: formValues),
-              const SizedBox(height: 10,),
-              TextFormsModel.textForm(controller: montoController,
-                  textInputType: TextInputType.number,
-                  focusNode: focusMonto
-                  ,
-                  label: 'Monto',
-                  icon: FontAwesomeIcons.dollarSign,
-                  formProperty: 'monto',
-                  formValues: formValues),
-              const SizedBox(height: 10,),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  MaterialButtonModel(model: 2,
-                      highlightColor: Colors.transparent,
-                      splashColor: CustomTheme.buttonPrimaryGradient,
-                      content: 'Transferir',
-                      onPressed: () => _transferButtonOnPressed,
-                      padding: const EdgeInsets.all(20.0),
-                      buttonColor: CustomTheme.buttonPrimary,
-                      fontSize: 20,
-                      textColor: Colors.white,
-                      fontFamily: 'WorkSansBold'),
-                  const SizedBox(width: 20,),
-                ],
-              )
-
-            ],
-          ),
+        child: BlocProvider(
+          create: (context) => TransferenciaCubit(),
+          child: _buildForm(context, transferenciaCubit),
         ),
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context, transferenciaCubit) {
+    final amount = transferenciaCubit.state.amount.value;
+    final accountNumber = transferenciaCubit.state.accountNumber.value;
+
+    return Form(
+      child: Column(
+        children: <Widget>[
+          TextFormsModel(textInputType: TextInputType.number,
+            decoration: InputDecoration(labelText: 'Número de cuenta', icon: Icon(FontAwesomeIcons.idCard), errorText: 'error'),
+            onChanged: (String value) {
+              formValues['cuentaReceptora'] = value;
+              transferenciaCubit.accountNumberChanged(value);
+            },),
+          const SizedBox(height: 10,),
+          TextFormsModel(textInputType: TextInputType.number,
+            decoration: InputDecoration(labelText: 'Monto', icon: Icon(FontAwesomeIcons.dollarSign), errorText: 'error')
+            , onChanged: (String value) {
+              formValues['monto'] = value;
+              transferenciaCubit.amountChanged(value);
+            },
+          ),
+          const SizedBox(height: 10,),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              MaterialButtonModel(model: 2,
+                  highlightColor: Colors.transparent,
+                  splashColor: CustomTheme.buttonPrimaryGradient,
+                  content: 'Transferir',
+                  onPressed: () => _transferButtonOnPressed,
+                  padding: const EdgeInsets.all(20.0),
+                  buttonColor: CustomTheme.buttonPrimary,
+                  fontSize: 20,
+                  textColor: Colors.white,
+                  fontFamily: 'WorkSansBold'),
+              const SizedBox(width: 20,),
+            ],
+          )
+
+        ],
       ),
     );
   }
@@ -131,8 +120,6 @@ class _TransferenciasViewState extends State<TransferenciasView> {
               context: context, title: 'Transferencia realizada',
               message: 'A realizado exitósamente su transferencia al usuario ${accountReceiver
                   .name}');
-          cuentaReceptoraController.text = '';
-          montoController.text = '';
         } else {
           Alerts.androidAlertDialog(context: context, title: 'Error',
               message: 'La transferencia no pudo ser realizada, verifique los datos');

@@ -10,7 +10,7 @@ class MaterialButtonModel extends StatelessWidget {
   final Color textColor;
   double fontSize = 25.0;
   String? fontFamily = 'WorkSansBold';
-  final Function onPressed;
+  final void Function()? onPressed;
   final EdgeInsetsGeometry padding;
 
   /** [MaterialButtonModel]
@@ -30,7 +30,7 @@ class MaterialButtonModel extends StatelessWidget {
       highlightColor: highlightColor,
       splashColor: splashColor,
       mouseCursor: SystemMouseCursors.click,
-      onPressed: onPressed(),
+      onPressed: () => onPressed!(),
       child: Padding(
         padding: padding,
         child: Text(
@@ -53,7 +53,7 @@ class MaterialButtonModel extends StatelessWidget {
       splashColor: splashColor,
       color: buttonColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      onPressed: onPressed(),
+      onPressed: () => onPressed!(),
       child: Text(
         content,
         style: TextStyle(

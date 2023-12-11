@@ -27,7 +27,7 @@ class DniInput extends FormzInput<String, DniError> {
   DniError? validator(String value) {
     if(value.isEmpty || value.trim().isEmpty) return DniError.empty;
     if(!dniRegExp.hasMatch(value)) return DniError.format;
-    if(value.length != 10) return DniError.format;
+    if(value.length != 10) return DniError.length;
     return null;
   }
 }

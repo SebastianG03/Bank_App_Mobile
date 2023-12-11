@@ -1,8 +1,8 @@
 
+import 'package:bank_app_mobile/infrastructure/model/models.dart' show User, BankAccount;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../model/models.dart';
 import '../../screens/screens.dart';
 
 class BAccountCardModel extends StatelessWidget {

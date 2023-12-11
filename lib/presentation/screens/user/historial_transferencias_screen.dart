@@ -1,7 +1,6 @@
 import 'package:bank_app_mobile/config/theme/theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../model/models.dart';
 import '../../utils/util.dart';

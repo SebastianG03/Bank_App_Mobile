@@ -1,13 +1,13 @@
 import 'package:bank_app_mobile/config/theme/theme.dart';
-import 'package:bank_app_mobile/presentation/blocs/register_forms/register_cubit.dart';
+import 'package:bank_app_mobile/infrastructure/model/models.dart';
+import 'package:bank_app_mobile/infrastructure/utils/utils.dart' show Util;
+import 'package:bank_app_mobile/logic/cubit/login_forms/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:go_router/go_router.dart';
-import '../../model/models.dart';
 import '../../screens/screens.dart';
-import '../../utils/util.dart';
 import '../../widgets/inputs/inputs.dart';
 import '../../widgets/widgets.dart';
 
@@ -34,7 +34,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final registerCubit = context.watch<RegisterCubit>();
+    final loginCubit = context.watch<LoginCubit>();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 23.0),
@@ -44,11 +44,11 @@ class _SignInState extends State<SignIn> {
         verticalDirection: VerticalDirection.down,
         children: <Widget>[
           BlocProvider(
-            create: (context) => RegisterCubit(),
+            create: (context) => LoginCubit(),
             child: Stack(
               alignment: Alignment.topCenter,
               children: <Widget>[
-                _cardForm(context, registerCubit),
+                _cardForm(context, loginCubit),
                 _signInButton(context),
               ],
             ),
@@ -70,7 +70,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  Widget _cardForm(BuildContext context, RegisterCubit registerCubit) {
+  Widget _cardForm(BuildContext context, LoginCubit loginCubit) {
     return Card(
       elevation: 2.0,
       color: Colors.white,
@@ -79,31 +79,31 @@ class _SignInState extends State<SignIn> {
       ),
       child: SizedBox(
         width: 300.0,
-        child: _buildForm(context, registerCubit),
+        child: _buildForm(context, loginCubit),
       ),
     );
   }
 
-  Widget _buildForm(BuildContext context, RegisterCubit registerCubit) {
-    final email = registerCubit.state.email;
-    final password = registerCubit.state.password;
+  Widget _buildForm(BuildContext context, LoginCubit loginCubit) {
+    final email = loginCubit.state.email;
+    final password = loginCubit.state.password;
 
 
     return Form(
       child: Column(
         children: <Widget>[
           TextFormsModel(textInputType: TextInputType.emailAddress,
-            decoration: const InputDecoration(labelText: 'Email', icon: Icon(FontAwesomeIcons.envelope), errorText: ''),
+            decoration: InputDecoration(labelText: 'Email', icon: const Icon(FontAwesomeIcons.envelope), errorText: email.errorMessage),
             onChanged: (String value) => {
               formValues['email'] = value,
-              registerCubit.emailChanged(value),
+              loginCubit.emailChanged(value),
             },),
           Divider(height: 1, color: Colors.grey[400], thickness: 1,),
           PasswordFormsModel(textInputType: TextInputType.text, label: 'Contraseña', obscureText: _obscureTextPassword,
             onChanged: (String value) => {
             formValues['password'] = value,
-              registerCubit.passwordChanged(value),
-            }, errorMessage: '', tap: _toggleLogin,),
+              loginCubit.passwordChanged(value),
+            }, errorMessage: password.errorMessage, tap: _toggleLogin,),
         ],
       ),
     );

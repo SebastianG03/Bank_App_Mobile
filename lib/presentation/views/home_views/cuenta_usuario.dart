@@ -1,7 +1,6 @@
+import 'package:bank_app_mobile/infrastructure/model/models.dart' show BankAccount, User;
+import 'package:bank_app_mobile/infrastructure/utils/utils.dart' show Util;
 import 'package:flutter/material.dart';
-
-import '../../model/models.dart';
-import '../../utils/utils.dart';
 
 class CuentaUsuarioView extends StatelessWidget {
 

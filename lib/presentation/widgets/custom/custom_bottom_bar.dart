@@ -1,8 +1,8 @@
+import 'package:bank_app_mobile/infrastructure/utils/app_bar_items.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/theme/theme.dart';
-import '../../utils/utils.dart';
 import '../../views/views_user.dart';
 
 class CustomBottomBar extends StatelessWidget {

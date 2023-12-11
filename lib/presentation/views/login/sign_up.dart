@@ -1,8 +1,8 @@
 
 import 'package:bank_app_mobile/config/theme/theme.dart';
-import 'package:bank_app_mobile/presentation/blocs/register_forms/register_cubit.dart';
-import 'package:bank_app_mobile/presentation/model/models.dart';
-import 'package:bank_app_mobile/presentation/utils/utils.dart';
+import 'package:bank_app_mobile/logic/cubit/register_forms/register_cubit.dart';
+import 'package:bank_app_mobile/infrastructure/model/models.dart';
+import 'package:bank_app_mobile/infrastructure/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,7 +19,6 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp>{
 
   bool _obscureTextPassword = true;
-  bool _obscureTextConfirmPassword = true;
 
   // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, String> formValues = {
@@ -72,12 +71,6 @@ class _SignUpState extends State<SignUp>{
     });
   }
 
-  void _toggleSignUpConfirm() {
-    setState(() {
-      _obscureTextConfirmPassword = !_obscureTextConfirmPassword;
-    });
-  }
-
   Widget _formContent(BuildContext context, double width, double height, RegisterCubit registerCubit) {
     return Form(
       child: Stack(
@@ -94,7 +87,7 @@ class _SignUpState extends State<SignUp>{
           Container(
             margin: EdgeInsetsDirectional.only(top: height * 0.8),
             decoration: CustomTheme.loginPageBtnContainerDecoration,
-            child: _registerButton(context),
+            child: _registerButton(context, registerCubit),
           ),
         ],
       ),
@@ -128,14 +121,14 @@ class _SignUpState extends State<SignUp>{
                 },),
             space(context),
             TextFormsModel(textInputType: TextInputType.phone,
-                decoration: const InputDecoration(labelText: 'Teléfono', icon: Icon(FontAwesomeIcons.phone)),
+                decoration: InputDecoration(labelText: 'Teléfono', icon: const Icon(FontAwesomeIcons.phone), errorText: phone.errorMessage),
                 onChanged: (String value) {
                   formValues['phone'] = value;
                   registerCubit.phoneChanged(value);
                 },),
             space(context),
             TextFormsModel(textInputType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Cédula', icon: Icon(FontAwesomeIcons.idCard)),
+                decoration: InputDecoration(labelText: 'Cédula', icon: const Icon(FontAwesomeIcons.idCard), errorText: dni.errorMessage),
                 onChanged: (String value) {
                   formValues['dni'] = value;
                   registerCubit.cedulaChanged(value);
@@ -152,23 +145,18 @@ class _SignUpState extends State<SignUp>{
     );
   }
 
-  Widget _registerButton(BuildContext context) {
+  Widget _registerButton(BuildContext context, RegisterCubit registerCubit) {
     return MaterialButtonModel(highlightColor: Colors.transparent, splashColor: CustomTheme.loginGradientEnd
-        , content: 'Crear Cuenta', onPressed: () => _signupButtonOnPressed, padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
+        , content: 'Crear Cuenta', onPressed: () => _signupButtonOnPressed(registerCubit), padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
         textColor: Colors.white, fontSize: 25.0, fontFamily: 'WorkSansBold');
   }
 
-  void _signupButtonOnPressed() {
+  void _signupButtonOnPressed(RegisterCubit registerCubit) {
     FocusScope.of(context).requestFocus(FocusNode());
-    // registerCubit.submit();
-
-    if(formValues.isEmpty || formValues['name']!.isEmpty || formValues['email']!.isEmpty
-        || formValues['password']!.isEmpty || formValues['phone']!.isEmpty
-        || formValues['dni']!.isEmpty ) {
-      Alerts.androidAlertDialog(context: context, title: 'No se pudo registrar el usuario',
-          message: 'Por favor llene todos los campos');
-    } else {
-
+    registerCubit.onSubmit();
+    bool isValid = registerCubit.state.isValid;
+    print(isValid);
+    if(isValid) {
       User user = User(idUser: util.users.length, name: formValues['name']!, email: formValues['email']!,
           password: formValues['password']!, phone: formValues['phone']!, role: formValues['role']!, dni: formValues['dni']!);
       BankAccount bankAccount = BankAccount(idAccount: util.bankAccounts.length,
@@ -180,6 +168,8 @@ class _SignUpState extends State<SignUp>{
       util.bankAccounts.add(bankAccount);
 
       Alerts.androidAlertDialog(context: context, title: 'Usuario registrado con éxito', message: 'Por favor inicie sesión');
+    } else {
+      Alerts.androidAlertDialog(context: context, title: 'Error', message: 'No se pudo crear su cuenta, verifique sus datos');
     }
   }
 }

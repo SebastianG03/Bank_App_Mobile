@@ -1,33 +1,33 @@
 import 'package:formz/formz.dart';
 
-enum DniError { empty, length, format}
+enum PhoneError { empty, length, format}
 
-class DniInput extends FormzInput<String, DniError> {
+class PhoneInput extends FormzInput<String, PhoneError> {
 
-  static final RegExp dniRegExp = RegExp(r'\d');
+  static final RegExp phoneRegExp = RegExp(r'\d');
 
 
   // Call super.pure to represent an unmodified form input.
-  const DniInput.pure() : super.pure('');
+  const PhoneInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const DniInput.dirty(String value) : super.dirty(value);
+  const PhoneInput.dirty(String value) : super.dirty(value);
 
 
   String? get errorMessage {
     if(isValid || isPure) return null;
-    if(displayError == DniError.empty) return 'El campo es requerido';
-    if(displayError == DniError.format) return 'La cédula no es válida';
-    if(displayError == DniError.length) return 'La cédula debe estar conformada de 10 números';
+    if(displayError == PhoneError.empty) return 'El campo es requerido';
+    if(displayError == PhoneError.format) return 'La número no es válido';
+    if(displayError == PhoneError.length) return 'La el número debe tener el siguiente formato 0xxxxxxxxx';
     return null;
   }
 
   // Override validator to handle validating a given input value.
   @override
-  DniError? validator(String value) {
-    if(value.isEmpty || value.trim().isEmpty) return DniError.empty;
-    if(!dniRegExp.hasMatch(value)) return DniError.format;
-    if(value.length != 10) return DniError.format;
+  PhoneError? validator(String value) {
+    if(value.isEmpty || value.trim().isEmpty) return PhoneError.empty;
+    if(!phoneRegExp.hasMatch(value)) return PhoneError.format;
+    if(value.length != 10) return PhoneError.length;
     return null;
   }
 }
